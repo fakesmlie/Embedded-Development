@@ -1,0 +1,73 @@
+#include"iom16v.h"
+#include <AVRdef.h>
+#include"led.h"
+//#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+#include"uart.h"
+
+
+
+
+
+void main(void)
+{
+
+    unsigned int voltage;
+	unsigned int voule;
+	//Key_Init();
+	LED_Init();
+    ADC_Init();
+    Nixie_Init();
+    switch_open(1);
+	
+	while(1)
+	{
+	
+
+	if(voltage_AD()<1250)
+	{
+	if(voltage_AD()<350)
+	{
+     voltage=(voltage_AD())*1.362-4;
+	 voule=voltage*2;
+     Nixie(1,0);
+     Nixie(2,voule/100%10);
+     Nixie(3,voule/10%10);
+     Nixie(4,voule%10);
+	// LED_open(1);  
+	}
+     voltage=(voltage_AD())*2.468-1112;
+	 voule=voltage*2;
+     Nixie(1,voule/1000);
+     Nixie(2,voule/100%10);
+     Nixie(3,voule/10%10);
+     Nixie(4,voule%10);
+	// LED_open(2); //关LED代码   
+	}
+	else
+	{
+	 voltage=(voltage_AD())*4-2700;
+     voule=voltage*2;
+     Nixie(1,voule/1000);
+     Nixie(2,voule/100%10);
+     Nixie(3,voule/10%10);
+     Nixie(4,voule%10);
+  //   LED_open(3);  //关LED代码  
+	}
+	
+	USART_Send(voule);
+	
+
+	
+	
+   
+   
+
+	
+
+
+	
+	}
+}
+

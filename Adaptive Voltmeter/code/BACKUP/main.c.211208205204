@@ -1,0 +1,75 @@
+#include"iom16v.h"
+#include <AVRdef.h>
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+#include"uart.h"
+
+
+void main(void)
+{
+
+    unsigned int voltage;
+	unsigned int voule;
+	//Key_Init();
+	LED_Init();
+    ADC_Init();
+    Nixie_Init();
+	//UART_Init();
+    switch_open(3);
+	
+	while(1)
+	{
+	delay_ms(1);
+	//switch_open(2);
+	if(voltage_AD()>10&&voltage_AD()<1200)
+	{
+	if(voltage_AD()<240)
+	{
+	  switch_open(1);
+	  delay_ms(1);
+	  voltage=voltage_AD();
+	  voule=(voltage*0.2)*2.138;
+	  Nixie(1,voule/1000);
+      Nixie(2,voule/100%10);
+      Nixie(3,voule/10%10);
+      Nixie(4,voule%10);
+	  LED_open(1);
+	  switch_open(3);
+	  delay_ms(1);
+	}
+	if(voltage_AD()>240)
+	{
+	  switch_open(2);
+	  delay_ms(1);
+	  voltage=voltage_AD();
+	  voule=(voltage*0.2)*10.313;
+	  Nixie(1,voule/1000);
+      Nixie(2,voule/100%10);
+      Nixie(3,voule/10%10);
+      Nixie(4,voule%10);
+	  LED_open(2);
+	  switch_open(3);
+	  delay_ms(1);
+	 }
+	}
+	if(voltage_AD()>1200)
+	{
+	//  switch_open(3);
+	//  delay_ms(1);
+	  voltage=voltage_AD();
+	  voule=(voltage*0.2)*20.627;
+	  Nixie(1,voule/1000);
+      Nixie(2,voule/100%10);
+      Nixie(3,voule/10%10);
+      Nixie(4,voule%10);
+	  LED_open(3);
+	  switch_open(3);
+	  delay_ms(1);
+	}
+	//USART_Send(voule);
+	
+	}
+}
+

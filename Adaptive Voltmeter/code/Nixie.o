@@ -1,0 +1,97 @@
+XL
+H 3 areas 6 global symbols
+M Nixie.c
+S push_xgset303C Ref0000
+S _delay_ms Ref0000
+S pop_xgset303C Ref0000
+A text size B6 flags 0
+dbfile Nixie.c
+dbfile D:\桌面\自适应电压表\程序\2.1最终\Nixie.c
+dbfunc e Nixie_Init 0 fV
+dbline FFFFFFFF 0
+dbline F 0
+dbline 12 0
+dbline 13 6
+dbline 14 C
+dbline 15 10
+dbline 16 12
+dbline 17 14
+dbline 18 16
+dbline 19 18
+dbline 1C 1A
+dbline 1D 1C
+dbline 1E 1E
+dbline 1F 20
+dbline FFFFFFFE 22
+dbline 0 22
+dbfunc e Nixie 24 fV
+dbsym r Number A c
+dbsym r Location C c
+dbline FFFFFFFF 2C
+dbline 27 2C
+dbline 28 2C
+dbline 2A 52
+dbline 2A 54
+dbline 2A 66
+dbline 2B 68
+dbline 2B 6A
+dbline 2B 7A
+dbline 2C 7C
+dbline 2C 7E
+dbline 2C 8E
+dbline 2D 90
+dbline 2D 92
+dbline 2D A2
+dbline 30 A2
+dbline 33 AA
+dbline 34 AC
+dbline 35 AE
+dbline 36 B0
+dbline FFFFFFFE B2
+dbline 0 B2
+S _Nixie_Init Def0000
+S _Nixie Def0024
+A data size A flags 20
+dbfile Nixie.c
+dbfile D:\桌面\自适应电压表\程序\2.1最终\Nixie.c
+dbsym e NixieTable 0 A[10:10]c
+S _NixieTable Def0000
+A idata size A flags 0
+T 00 00 C0 F9
+R 00 00 02 00
+T 02 00 A4 B0
+R 00 00 02 00
+T 04 00 99 92
+R 00 00 02 00
+T 06 00 82 F8
+R 00 00 02 00
+T 08 00 80 90
+R 00 00 02 00
+T 00 00 84 B7 80 68 84 BF 84 B7 80 68 84 BF 8F EF
+R 00 00 00 00
+T 0E 00 84 BB 85 BB D4 9A D5 9A D6 9A D7 9A DC 98
+R 00 00 00 00
+T 1C 00 DD 98 DE 98 DF 98 08 95
+R 00 00 00 00
+T 24 00 0E 94 00 00 A2 2E C0 2E 4C 2D 55 27 41 30
+R 00 00 00 00 12 04 00 00
+T 32 00 E0 E0 5E 07 69 F0 42 30 E0 E0 5E 07 A1 F0
+R 00 00 00 00
+T 40 00 43 30 E0 E0 5E 07 D1 F0 44 30 E0 E0 5E 07
+R 00 00 00 00
+T 4E 00 01 F1 28 C0 DC 9A 80 E0 90 E0 EA 2D FF 27
+R 00 00 00 00 20 08 01 00 00 00 40 0A 01 00 00 00
+T 5C 00 E8 0F F9 1F 80 81 80 58 85 BB 1D C0 DD 9A
+R 00 00 00 00
+T 6A 00 80 E0 90 E0 EA 2D FF 27 E8 0F F9 1F 20 80
+R 00 00 00 00 20 02 01 00 00 00 40 04 01 00 00 00
+T 78 00 25 BA 13 C0 DE 9A 80 E0 90 E0 EA 2D FF 27
+R 00 00 00 00 20 08 01 00 00 00 40 0A 01 00 00 00
+T 86 00 E8 0F F9 1F 20 80 25 BA 09 C0 DF 9A 80 E0
+R 00 00 00 00 20 0E 01 00 00 00
+T 94 00 90 E0 EA 2D FF 27 E8 0F F9 1F 20 80 25 BA
+R 00 00 00 00 40 02 01 00 00 00
+T A2 00 01 E0 10 E0 0E 94 00 00 DC 98 DD 98 DE 98
+R 00 00 00 00 12 08 01 00
+T B0 00 DF 98 0C 94 00 00
+R 00 00 00 00 12 06 02 00

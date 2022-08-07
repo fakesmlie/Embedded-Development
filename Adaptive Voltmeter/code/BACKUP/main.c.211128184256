@@ -1,0 +1,69 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+void CD4051BC(unsigned char n)
+{
+    DDRA|=BIT(PA1);                    // PA1设为输入
+    PORTA&=~BIT(PA1);                    //PA1设置为低电平
+	DDRA|=BIT(PA2);                    // PA2设为输入
+    PORTA&=~BIT(PA2);                    //PA2设置为低电平
+	DDRA|=BIT(PA3);                    // PA3设为输入
+    PORTA&=~BIT(PA3);                    //PA3设置为低电平 
+switch(n)		//位码输出
+	{
+		case 1:PORTA|=BIT(1);PORTA|=BIT(2);PORTA|=BIT(3);break;
+		case 2:PORTA|=BIT(1);PORTA|=BIT(2);PORTA|=BIT(3);break;
+		case 3:PORTA|=BIT(1);PORTA|=BIT(2);PORTA|=BIT(3);break;
+	}
+}
+
+
+unsigned int voltage_AD(void)
+{
+
+    unsigned int addata;
+    PORTA&=~BIT(PA0);                    //PORTA = 0x00; //  PA0设为输入
+    DDRA&=~BIT(PA0);             //DDRA = 0x00;  
+    SFIOR = 0; //连续转换模式
+    ADMUX = 0x00; // ADC0单端输入 AVCC参考电压
+	
+    ADCSRA = 0xC0; //启动AD转换, 并开始转换
+    while ((ADCSRA & 0x10) == 0); //等到转换结束
+    addata = ADCL; //读取ADC数据 低位
+    addata = addata + ADCH * 256; //读取ADC数据 低位 + 高位
+    ADCSRA |= 0x10;
+    addata = addata / 1024.0 * 5000; //计算电压
+    return addata;
+
+}
+
+
+
+void main(void)
+{
+unsigned int voltage;
+Nixie_Init();
+
+while(1)
+{
+voltage=voltage_AD();
+Nixie(1,voltage/1000%10);
+Nixie(2,voltage/100%10);
+Nixie(3,voltage/10%10);
+//Nixie(4,voltage%10);
+
+}
+}

@@ -1,0 +1,60 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+//#include"uart.h"
+
+
+extern unsigned char RX_Buffer=0x00, RX_flag=0;
+
+
+void main(void)
+{
+ //	USART_Init();
+	//Key_Init();
+	//LED_Init();
+	//Nixie_Init();
+  //  Nixie(1,10);
+  DDRA=0xff;
+  PORTA=0x80;
+  DDRC=0xff;
+  PORTC=0xdf;
+
+   
+
+	while(1)
+	{
+	//Key_1();
+	//Key_2();	
+	//Nixie(1,1);
+	//Nixie(2,10);
+	//Nixie(3,0);
+	//Nixie(4,0);
+	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//自发收的配置
+
+/* 		if(RX_flag)
+		{
+ 		   RX_flag=0;
+ 		   USART_Send(RX_Buffer);
+		   PORTB&=~BIT(2);
+ 
+ 		 }*/

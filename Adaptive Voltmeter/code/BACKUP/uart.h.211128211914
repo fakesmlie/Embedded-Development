@@ -1,0 +1,7 @@
+#ifndef ___uart_h
+#define ___uart_h
+
+void LED_Init(void);
+
+
+#endif

@@ -1,0 +1,29 @@
+#include"iom16v.h"
+#include"macros.h"
+
+
+
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+
+void main()
+{
+
+
+ 	DDRB|=BIT(2);//PB2设置输出
+	PORTB&=~BIT(2);
+
+
+
+
+
+}

@@ -1,0 +1,34 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"Nixie.h"
+
+
+//数码管段码表
+unsigned char const NixieTable[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};// 0~9
+
+void Nixie_Init(void)
+{
+    DDRC=0xff;   // 配置PC为输出   1111 1111
+    PORTC=0xff;   //配置PC输出高电平    1111 1111
+	DDRA=0xf0;   // 配置PA为输出   1111 0000
+    PORTA=0xf0;   //配置PA输出高电平    1111 0000
+
+}
+
+
+
+void Nixie(unsigned char Location,unsigned char Number)
+{
+	switch(Location)		//位码输出
+	{
+		case 1:PORTA|=BIT(4);break;
+		case 2:PORTA|=BIT(5);break;
+		case 3:PORTA|=BIT(6);break;
+		case 4:PORTA|=BIT(7);break;
+	}
+	PORTC=NixieTable[Number];	//段码输出
+}
+
+
+
+

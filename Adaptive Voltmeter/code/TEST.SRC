@@ -1,0 +1,14 @@
+[Files]
+main.c
+led.c
+led.h
+key.c
+key.h
+Nixie.c
+Nixie.h
+ADC.c
+ADC.h
+UART.c
+UART.h
+[Headers]
+[Documents]

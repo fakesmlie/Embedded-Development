@@ -1,0 +1,17 @@
+#ifndef ___uart_h
+#define ___uart_h
+
+
+//波特率，晶振
+#define BAUD 9600
+#define FXTAL 8000000
+//串口接收完毕中断触发声明
+#pragma interrupt_handler_USART_Received_Ir:12
+
+extern unsigned char RX_Buffer=0x00, RX_flag=0;
+void USART_IO_Init(void);
+void USART_Init(void);
+void USART_Send(unsigned char Date);
+
+
+#endif

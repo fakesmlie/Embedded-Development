@@ -1,0 +1,76 @@
+#include"iom16v.h"
+#include <AVRdef.h>
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+#include"uart.h"
+
+
+void main(void)
+{
+
+    unsigned int voltage;
+	unsigned int voule;
+	switch_open(3);
+	//Key_Init();
+	LED_Init();
+    ADC_Init();
+    Nixie_Init();
+	UART_Init();
+    
+	
+	while(1)
+	{
+	delay_ms(1);
+	//switch_open(2);
+	if(voltage_AD()>10&&voltage_AD()<1200)
+	{
+	if(voltage_AD()<240)
+	{
+	  switch_open(1);
+	  delay_ms(1);
+	  voltage=voltage_AD();
+	  voule=(voltage*0.198)*2.172;
+	  ADC_show(voule);
+	  LED_open(1);
+	  switch_open(3);
+	 // delay_ms(1);
+	  UART_Send_String("1µµ£º",5);
+	}
+	if(voltage_AD()>240)
+	{
+	  switch_open(2);
+	//  ADC_show(voule);
+	  delay_ms(2);
+	  voltage=voltage_AD();
+	  voule=(voltage*0.198)*10.334;
+	  ADC_show(voule);
+	  LED_open(2);
+	  switch_open(3);
+	 // delay_ms(1);
+	//  ADC_show(voule);
+	  UART_Send_String("2µµ£º",5);
+	 }
+	}
+	if(voltage_AD()>1200)
+	{
+	//  switch_open(3);
+	//  delay_ms(1);
+	  voltage=voltage_AD();
+	  voule=(voltage*0.199)*20.656-80;
+	  ADC_show(voule);
+	  LED_open(3);
+	  switch_open(3);
+	//  delay_ms(1);
+	  UART_Send_String("3µµ£º",5);
+	}
+	USART_Send(voule/1000+0x30);
+	USART_Send('.');
+	USART_Send(voule%1000/100+0x30);
+	USART_Send(voule%100/10+0x30);
+	USART_Send(voule%10+0x30);
+	USART_Send('V');
+	}
+}
+

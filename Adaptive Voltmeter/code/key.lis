@@ -1,0 +1,251 @@
+                        .module key.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile key.c
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\key.c
+ 0000                   .dbfunc e Key_Init _Key_Init fV
+                        .even
+ 0000           _Key_Init::
+ 0000                   .dbline -1
+ 0000                   .dbline 11
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include"macros.h"
+ 0000           ; #include"key.h"
+ 0000           ; 
+ 0000           ; 
+ 0000           ; 
+ 0000           ; //#define FSOC 8
+ 0000           ; /*** 按键初始化函数 ***/
+ 0000           ; /******************************************************************************/
+ 0000           ; void Key_Init(void)
+ 0000           ; {
+ 0000                   .dbline 15
+ 0000           ; 
+ 0000           ;  //   DDRB=0x1c;   //k1 k2 配置为输入   0001 1100
+ 0000           ;  //   PORTB=0x1f;   //使能上拉电阻   0001 1111
+ 0000           ;       DDRB&=~BIT(PB0);
+ 0000 B898              cbi 0x17,0
+ 0002                   .dbline 16
+ 0002           ;       DDRB&=~BIT(PB1);
+ 0002 B998              cbi 0x17,1
+ 0004                   .dbline 17
+ 0004           ;       PORTB|=BIT(PB0);
+ 0004 C09A              sbi 0x18,0
+ 0006                   .dbline 18
+ 0006           ;       PORTB|=BIT(PB1);  
+ 0006 C19A              sbi 0x18,1
+ 0008                   .dbline -2
+ 0008           L1:
+ 0008                   .dbline 0 ; func end
+ 0008 0895              ret
+ 000A                   .dbend
+ 000A                   .dbfunc e Key_1 _Key_1 fV
+                        .even
+ 000A           _Key_1::
+ 000A                   .dbline -1
+ 000A                   .dbline 23
+ 000A           ; }
+ 000A           ; 
+ 000A           ; 
+ 000A           ; void Key_1(void)
+ 000A           ; {
+ 000A                   .dbline 24
+ 000A           ;     if((PINB&(1<<PB1))==0)//检验PB0的电平状态是否为低电平
+ 000A B199              sbic 0x16,1
+ 000C 06C0              rjmp L8
+ 000E           X0:
+ 000E                   .dbline 25
+ 000E           ;     {
+ 000E                   .dbline 26
+ 000E           ;            delay_ms(20);//延时消抖
+ 000E 04E1              ldi R16,20
+ 0010 10E0              ldi R17,0
+ 0012 11D0              xcall _delay_ms
+ 0014                   .dbline 27
+ 0014           ;          if((PINB&(1<<PB1))==0)
+ 0014 B199              sbic 0x16,1
+ 0016 01C0              rjmp L8
+ 0018           X1:
+ 0018                   .dbline 28
+ 0018           ;          {
+ 0018                   .dbline 29
+ 0018           ;                  PORTB&=~BIT(2);   //此处放处理函数  
+ 0018 C298              cbi 0x18,2
+ 001A                   .dbline 30
+ 001A           ;          }
+ 001A                   .dbline 31
+ 001A           ;     }
+ 001A           L7:
+ 001A                   .dbline 32
+ 001A           ;     while((PINB&(1<<PB1))==0);//判断按键是否松开
+ 001A           L8:
+ 001A                   .dbline 32
+ 001A B19B              sbis 0x16,1
+ 001C FECF              rjmp L7
+ 001E           X2:
+ 001E                   .dbline -2
+ 001E           L2:
+ 001E                   .dbline 0 ; func end
+ 001E 0895              ret
+ 0020                   .dbend
+ 0020                   .dbfunc e Key_2 _Key_2 fV
+                        .even
+ 0020           _Key_2::
+ 0020                   .dbline -1
+ 0020                   .dbline 36
+ 0020           ; }
+ 0020           ; 
+ 0020           ; void Key_2(void)
+ 0020           ; {
+ 0020                   .dbline 37
+ 0020           ;     if((PINB&(1<<PB0))==0)//检验PB0的电平状态是否为低电平
+ 0020 B099              sbic 0x16,0
+ 0022 06C0              rjmp L16
+ 0024           X3:
+ 0024                   .dbline 38
+ 0024           ;     {
+ 0024                   .dbline 39
+ 0024           ;            delay_ms(20);//延时消抖
+ 0024 04E1              ldi R16,20
+ 0026 10E0              ldi R17,0
+ 0028 06D0              xcall _delay_ms
+ 002A                   .dbline 40
+ 002A           ;          if((PINB&(1<<PB0))==0)
+ 002A B099              sbic 0x16,0
+ 002C 01C0              rjmp L16
+ 002E           X4:
+ 002E                   .dbline 41
+ 002E           ;          {
+ 002E                   .dbline 42
+ 002E           ;                  PORTB|=BIT(2);   //此处放处理函数  
+ 002E C29A              sbi 0x18,2
+ 0030                   .dbline 43
+ 0030           ;          }
+ 0030                   .dbline 44
+ 0030           ;     }
+ 0030           L15:
+ 0030                   .dbline 45
+ 0030           ;     while((PINB&(1<<PB0))==0);//判断按键是否松开
+ 0030           L16:
+ 0030                   .dbline 45
+ 0030 B09B              sbis 0x16,0
+ 0032 FECF              rjmp L15
+ 0034           X5:
+ 0034                   .dbline -2
+ 0034           L10:
+ 0034                   .dbline 0 ; func end
+ 0034 0895              ret
+ 0036                   .dbend
+ 0036                   .dbfunc e delay_ms _delay_ms fV
+ 0036           ;              x -> R20,R21
+ 0036           ;              y -> R22,R23
+ 0036           ;              a -> R16,R17
+                        .even
+ 0036           _delay_ms::
+ 0036 0E940000          xcall push_xgsetF000
+ 003A                   .dbline -1
+ 003A                   .dbline 51
+ 003A           ; }
+ 003A           ; 
+ 003A           ; //延时函数
+ 003A           ; 
+ 003A           ; void delay_ms(unsigned int a)     
+ 003A           ; {
+ 003A                   .dbline 53
+ 003A           ;          unsigned int x,y;
+ 003A           ;          for(x=a;x>0;x--)
+ 003A A801              movw R20,R16
+ 003C 0AC0              xjmp L22
+ 003E           L19:
+ 003E                   .dbline 54
+ 003E           ;                   for(y=316;y>0;y--);
+ 003E 6CE3              ldi R22,316
+ 0040 71E0              ldi R23,1
+ 0042 02C0              xjmp L26
+ 0044           L23:
+ 0044                   .dbline 54
+ 0044           L24:
+ 0044                   .dbline 54
+ 0044 6150              subi R22,1
+ 0046 7040              sbci R23,0
+ 0048           L26:
+ 0048                   .dbline 54
+ 0048 6030              cpi R22,0
+ 004A 6707              cpc R22,R23
+ 004C D9F7              brne L23
+ 004E           X6:
+ 004E           L20:
+ 004E                   .dbline 53
+ 004E 4150              subi R20,1
+ 0050 5040              sbci R21,0
+ 0052           L22:
+ 0052                   .dbline 53
+ 0052 4030              cpi R20,0
+ 0054 4507              cpc R20,R21
+ 0056 99F7              brne L19
+ 0058           X7:
+ 0058                   .dbline -2
+ 0058           L18:
+ 0058                   .dbline 0 ; func end
+ 0058 0C940000          xjmp pop_xgsetF000
+ 005C                   .dbsym r x 20 i
+ 005C                   .dbsym r y 22 i
+ 005C                   .dbsym r a 16 i
+ 005C                   .dbend
+ 005C                   .dbfunc e Delay_1ms _Delay_1ms fV
+ 005C           ;              i -> R16,R17
+                        .even
+ 005C           _Delay_1ms::
+ 005C                   .dbline -1
+ 005C                   .dbline 60
+ 005C           ; }
+ 005C           ; 
+ 005C           ; 
+ 005C           ; 
+ 005C           ; void Delay_1ms(void)
+ 005C           ; {
+ 005C                   .dbline 63
+ 005C           ;       unsigned int i;
+ 005C           ;       //for(i=1;i<(unsigned int)(FSOC*124);i++)
+ 005C           ;       for(i=1;i<(unsigned int)(3*16);i++)
+ 005C 01E0              ldi R16,1
+ 005E 10E0              ldi R17,0
+ 0060 02C0              xjmp L31
+ 0062           L28:
+ 0062                   .dbline 64
+ 0062           ;               {
+ 0062                   .dbline 65
+ 0062           ;                       ;
+ 0062                   .dbline 66
+ 0062           ;               }
+ 0062           L29:
+ 0062                   .dbline 63
+ 0062 0F5F              subi R16,255  ; offset = 1
+ 0064 1F4F              sbci R17,255
+ 0066           L31:
+ 0066                   .dbline 63
+ 0066 80E3              ldi R24,48
+ 0068 90E0              ldi R25,0
+ 006A 0817              cp R16,R24
+ 006C 1907              cpc R17,R25
+ 006E C8F3              brlo L28
+ 0070           X8:
+ 0070                   .dbline -2
+ 0070           L27:
+ 0070                   .dbline 0 ; func end
+ 0070 0895              ret
+ 0072                   .dbsym r i 16 i
+ 0072                   .dbend
+ 0072           ;               
+ 0072           ; }
+ 0072           ; 
+ 0072           ; /*
+ 0072           ; void delay_ms(unsigned int n)  //延时n*1ms
+ 0072           ; {
+ 0072           ;       unsigned int i=0;
+ 0072           ;       while(i<n)
+ 0072           ;               {
+ 0072           ;                       Delay_1ms();
+ 0072           ;                       i++;
+ 0072           ;               }
+ 0072           ; }
+ 0072           ; */

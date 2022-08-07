@@ -1,0 +1,288 @@
+                        .module ADC.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile ADC.c
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\ADC.c
+ 0000                   .dbfunc e ADC_Init _ADC_Init fV
+                        .even
+ 0000           _ADC_Init::
+ 0000                   .dbline -1
+ 0000                   .dbline 12
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include"macros.h"
+ 0000           ; #include"adc.h"
+ 0000           ; #include"Nixie.h"
+ 0000           ; 
+ 0000           ; 
+ 0000           ; 
+ 0000           ; /*** 初始化函数 ***/
+ 0000           ; /******************************************************************************/
+ 0000           ; 
+ 0000           ; void ADC_Init(void)
+ 0000           ; {  //开关端口的配置PA1~3
+ 0000                   .dbline 13
+ 0000           ;     DDRA|=BIT(PA1);                    // PA1设为输出
+ 0000 D19A              sbi 0x1a,1
+ 0002                   .dbline 14
+ 0002           ;       PORTA|=BIT(PA1);                   //  PA1输出高电平       CD4501A
+ 0002 D99A              sbi 0x1b,1
+ 0004                   .dbline 16
+ 0004           ;                   
+ 0004           ;       DDRA|=BIT(PA2);                    // PA2设为输出
+ 0004 D29A              sbi 0x1a,2
+ 0006                   .dbline 17
+ 0006           ;       PORTA|=BIT(PA2);                   //PA2输出高电平         CD4501B
+ 0006 DA9A              sbi 0x1b,2
+ 0008                   .dbline 19
+ 0008           ;                  
+ 0008           ;       DDRA|=BIT(PA3);                    // PA3设为输出
+ 0008 D39A              sbi 0x1a,3
+ 000A                   .dbline 20
+ 000A           ;       PORTA|=BIT(PA3);                   //PA3输出高电平         CD4501c
+ 000A DB9A              sbi 0x1b,3
+ 000C                   .dbline 22
+ 000C           ;       //ADC0 端口的配置
+ 000C           ;     PORTA&=~BIT(PA0); 
+ 000C D898              cbi 0x1b,0
+ 000E                   .dbline 23
+ 000E           ;     DDRA&=~BIT(PA0);//输入
+ 000E D098              cbi 0x1a,0
+ 0010                   .dbline 24
+ 0010           ;     SFIOR = 0; //连续转换模式 
+ 0010 2224              clr R2
+ 0012 20BE              out 0x30,R2
+ 0014                   .dbline 25
+ 0014           ;     ADMUX = 0x00; // ADC0单端输入 AVER参考电压 2.503V
+ 0014 27B8              out 0x7,R2
+ 0016                   .dbline -2
+ 0016           L1:
+ 0016                   .dbline 0 ; func end
+ 0016 0895              ret
+ 0018                   .dbend
+ 0018                   .dbfunc e switch_open _switch_open fV
+ 0018           ;            TEM -> R16,R17
+                        .even
+ 0018           _switch_open::
+ 0018                   .dbline -1
+ 0018                   .dbline 36
+ 0018           ; 
+ 0018           ; 
+ 0018           ; }
+ 0018           ; 
+ 0018           ; 
+ 0018           ; 
+ 0018           ; 
+ 0018           ; 
+ 0018           ; //多路开关配置带代码
+ 0018           ; void switch_open(unsigned int TEM)
+ 0018           ; {
+ 0018                   .dbline 38
+ 0018           ; 
+ 0018           ;     switch(TEM)               //位码输出
+ 0018 0130              cpi R16,1
+ 001A E0E0              ldi R30,0
+ 001C 1E07              cpc R17,R30
+ 001E 49F0              breq L5
+ 0020           X0:
+ 0020 0230              cpi R16,2
+ 0022 E0E0              ldi R30,0
+ 0024 1E07              cpc R17,R30
+ 0026 49F0              breq L6
+ 0028           X1:
+ 0028 0330              cpi R16,3
+ 002A E0E0              ldi R30,0
+ 002C 1E07              cpc R17,R30
+ 002E 49F0              breq L7
+ 0030           X2:
+ 0030 0BC0              xjmp L3
+ 0032           L5:
+ 0032                   .dbline 40
+ 0032           ;       {
+ 0032           ;               case 1:PORTA|=BIT(PA1);PORTA|=BIT(PA2);PORTA&=~BIT(PA3);break;
+ 0032 D99A              sbi 0x1b,1
+ 0034                   .dbline 40
+ 0034 DA9A              sbi 0x1b,2
+ 0036                   .dbline 40
+ 0036 DB98              cbi 0x1b,3
+ 0038                   .dbline 40
+ 0038 07C0              xjmp L4
+ 003A           L6:
+ 003A                   .dbline 41
+ 003A           ;               case 2:PORTA&=~BIT(PA1);PORTA&=~BIT(PA2);PORTA&=~BIT(PA3);break;
+ 003A D998              cbi 0x1b,1
+ 003C                   .dbline 41
+ 003C DA98              cbi 0x1b,2
+ 003E                   .dbline 41
+ 003E DB98              cbi 0x1b,3
+ 0040                   .dbline 41
+ 0040 03C0              xjmp L4
+ 0042           L7:
+ 0042                   .dbline 42
+ 0042           ;               case 3:PORTA|=BIT(PA1);PORTA&=~BIT(PA2);PORTA&=~BIT(PA3);break;
+ 0042 D99A              sbi 0x1b,1
+ 0044                   .dbline 42
+ 0044 DA98              cbi 0x1b,2
+ 0046                   .dbline 42
+ 0046 DB98              cbi 0x1b,3
+ 0048                   .dbline 42
+ 0048           L3:
+ 0048           L4:
+ 0048                   .dbline -2
+ 0048           L2:
+ 0048                   .dbline 0 ; func end
+ 0048 0895              ret
+ 004A                   .dbsym r TEM 16 i
+ 004A                   .dbend
+ 004A                   .dbfunc e voltage_AD _voltage_AD fi
+ 004A           ;         addata -> R10,R11
+                        .even
+ 004A           _voltage_AD::
+ 004A AA92              st -y,R10
+ 004C BA92              st -y,R11
+ 004E                   .dbline -1
+ 004E                   .dbline 51
+ 004E           ;       }
+ 004E           ;       
+ 004E           ; 
+ 004E           ; }
+ 004E           ; 
+ 004E           ; //ADC配置代码
+ 004E           ; 
+ 004E           ; unsigned int voltage_AD(void)
+ 004E           ; {
+ 004E                   .dbline 54
+ 004E           ; 
+ 004E           ;     unsigned int addata;
+ 004E           ;     ADCSRA = 0xC0; //启动AD转换, 并开始转换
+ 004E 80EC              ldi R24,192
+ 0050 86B9              out 0x6,R24
+ 0052           L9:
+ 0052                   .dbline 55
+ 0052           ;     while ((ADCSRA & 0x10) == 0); //等到转换结束
+ 0052           L10:
+ 0052                   .dbline 55
+ 0052 349B              sbis 0x6,4
+ 0054 FECF              rjmp L9
+ 0056           X3:
+ 0056                   .dbline 56
+ 0056           ;     addata = ADCL; //读取ADC数据 低位
+ 0056 A4B0              in R10,0x4
+ 0058 BB24              clr R11
+ 005A                   .dbline 57
+ 005A           ;     addata = addata + ADCH * 256; //读取ADC数据 低位 + 高位
+ 005A 25B1              in R18,0x5
+ 005C 3327              clr R19
+ 005E 00E0              ldi R16,256
+ 0060 11E0              ldi R17,1
+ 0062 0E940000          xcall empy16s
+ 0066 A00E              add R10,R16
+ 0068 B11E              adc R11,R17
+ 006A                   .dbline 58
+ 006A           ;     ADCSRA |= 0x10;
+ 006A 349A              sbi 0x6,4
+ 006C                   .dbline 59
+ 006C           ;     addata = addata / 1024.0 * 2503; //计算电压
+ 006C 00E0              ldi R16,<L12
+ 006E 10E0              ldi R17,>L12
+ 0070 0E940000          xcall elpm32
+ 0074 1801              movw R2,R16
+ 0076 2901              movw R4,R18
+ 0078 8501              movw R16,R10
+ 007A 0E940000          xcall uint2fp
+ 007E 3801              movw R6,R16
+ 0080 4901              movw R8,R18
+ 0082 00E0              ldi R16,<L13
+ 0084 10E0              ldi R17,>L13
+ 0086 0E940000          xcall elpm32
+ 008A 3A93              st -y,R19
+ 008C 2A93              st -y,R18
+ 008E 1A93              st -y,R17
+ 0090 0A93              st -y,R16
+ 0092 8301              movw R16,R6
+ 0094 9401              movw R18,R8
+ 0096 0E940000          xcall fpdiv2x
+ 009A 8101              movw R16,R2
+ 009C 9201              movw R18,R4
+ 009E 0E940000          xcall fpmule2
+ 00A2 0E940000          xcall fpint
+ 00A6 5801              movw R10,R16
+ 00A8                   .dbline 60
+ 00A8           ;     return addata;
+ 00A8                   .dbline -2
+ 00A8           L8:
+ 00A8                   .dbline 0 ; func end
+ 00A8 B990              ld R11,y+
+ 00AA A990              ld R10,y+
+ 00AC 0895              ret
+ 00AE                   .dbsym r addata 10 i
+ 00AE                   .dbend
+ 00AE                   .dbfunc e ADC_show _ADC_show fV
+ 00AE           ;            mum -> R10,R11
+                        .even
+ 00AE           _ADC_show::
+ 00AE AA92              st -y,R10
+ 00B0 BA92              st -y,R11
+ 00B2 5801              movw R10,R16
+ 00B4                   .dbline -1
+ 00B4                   .dbline 66
+ 00B4           ; 
+ 00B4           ; }
+ 00B4           ; 
+ 00B4           ; 
+ 00B4           ; void ADC_show(unsigned int mum)
+ 00B4           ; {
+ 00B4                   .dbline 67
+ 00B4           ;       Nixie(1,mum/1000);
+ 00B4 28EE              ldi R18,1000
+ 00B6 33E0              ldi R19,3
+ 00B8 8501              movw R16,R10
+ 00BA 0E940000          xcall div16u
+ 00BE 202F              mov R18,R16
+ 00C0 01E0              ldi R16,1
+ 00C2 0E940000          xcall _Nixie
+ 00C6                   .dbline 68
+ 00C6           ;     Nixie(2,mum/100%10);
+ 00C6 24E6              ldi R18,100
+ 00C8 30E0              ldi R19,0
+ 00CA 8501              movw R16,R10
+ 00CC 0E940000          xcall div16u
+ 00D0 2AE0              ldi R18,10
+ 00D2 30E0              ldi R19,0
+ 00D4 0E940000          xcall mod16u
+ 00D8 202F              mov R18,R16
+ 00DA 02E0              ldi R16,2
+ 00DC 0E940000          xcall _Nixie
+ 00E0                   .dbline 69
+ 00E0           ;     Nixie(3,mum/10%10);
+ 00E0 2AE0              ldi R18,10
+ 00E2 30E0              ldi R19,0
+ 00E4 8501              movw R16,R10
+ 00E6 0E940000          xcall div16u
+ 00EA 2AE0              ldi R18,10
+ 00EC 30E0              ldi R19,0
+ 00EE 0E940000          xcall mod16u
+ 00F2 202F              mov R18,R16
+ 00F4 03E0              ldi R16,3
+ 00F6 0E940000          xcall _Nixie
+ 00FA                   .dbline 70
+ 00FA           ;     Nixie(4,mum%10);
+ 00FA 2AE0              ldi R18,10
+ 00FC 30E0              ldi R19,0
+ 00FE 8501              movw R16,R10
+ 0100 0E940000          xcall mod16u
+ 0104 202F              mov R18,R16
+ 0106 04E0              ldi R16,4
+ 0108 0E940000          xcall _Nixie
+ 010C                   .dbline -2
+ 010C           L14:
+ 010C                   .dbline 0 ; func end
+ 010C B990              ld R11,y+
+ 010E A990              ld R10,y+
+ 0110 0895              ret
+ 0112                   .dbsym r mum 10 i
+ 0112                   .dbend
+                        .area lit(rom, con, rel)
+ 0000           L13:
+ 0000 00008044          .word 0x0,0x4480
+ 0004           L12:
+ 0004 00701C45          .word 0x7000,0x451c
+ 0008           ; }

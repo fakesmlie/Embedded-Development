@@ -1,0 +1,50 @@
+#include"iom16v.h"
+#include <AVRdef.h>
+//#include"led.h"
+//#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+//#include"uart.h"
+
+
+
+
+
+
+void main(void)
+{
+
+    unsigned int voltage;
+	unsigned int value;
+	//Key_Init();
+	//LED_Init();
+   ADC_Init();
+   Nixie_Init();
+   
+	
+	while(1)
+	{
+	value=switch_open(1);
+	voltage=(voltage_AD())*3.98-2966+200;
+	
+	if((voltage/1000)<10)
+	{
+	//Nixie(1,voltage/1000);
+	PORTA|=BIT(4);
+	PORTC=NixieTable[voltage/1000]+0x80;
+    Nixie(2,voltage/100%10);
+    Nixie(3,voltage/10%10);
+    Nixie(4,voltage%10);
+	}
+	
+	
+   
+   
+
+	
+
+
+	
+	}
+}
+

@@ -1,0 +1,13 @@
+#include"iom16v.h"
+#include"macros.h"
+
+void main()
+{
+
+
+ 	DDRB|=BIT(2);
+	PORTB&=~BIT(2);
+
+
+
+}

@@ -1,0 +1,26 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+
+//ÑÓÊ±º¯Êý
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+void main(void)
+{
+Nixie_Init();
+Nixie(1,1);
+while(1)
+{
+
+}
+}

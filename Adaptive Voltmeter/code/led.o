@@ -1,0 +1,50 @@
+XL
+H 1 areas 2 global symbols
+M led.c
+A text size 4C flags 0
+dbfile led.c
+dbfile D:\桌面\自适应电压表\程序\1.8\led.c
+dbfunc e LED_Init 0 fV
+dbline FFFFFFFF 0
+dbline A 0
+dbline B 0
+dbline C 2
+dbline D 4
+dbline E 6
+dbline F 8
+dbline 10 A
+dbline FFFFFFFE C
+dbline 0 C
+dbfunc e LED_open E fV
+dbsym r sw 10 c
+dbline FFFFFFFF 12
+dbline 1C 12
+dbline 1D 12
+dbline 1F 30
+dbline 1F 32
+dbline 1F 34
+dbline 1F 36
+dbline 20 38
+dbline 20 3A
+dbline 20 3C
+dbline 20 3E
+dbline 21 40
+dbline 21 42
+dbline 21 44
+dbline 21 46
+dbline FFFFFFFE 46
+dbline 0 46
+S _LED_Init Def0000
+S _LED_open Def000E
+T 00 00 BA 9A BB 9A BC 9A C2 9A C3 9A C4 9A 08 95
+R 00 00 00 00
+T 0E 00 4A 93 5A 93 40 2F 55 27 41 30 E0 E0 5E 07
+R 00 00 00 00
+T 1C 00 49 F0 42 30 E0 E0 5E 07 49 F0 43 30 E0 E0
+R 00 00 00 00
+T 2A 00 5E 07 49 F0 0B C0 C2 98 C3 9A C4 9A 07 C0
+R 00 00 00 00
+T 38 00 C2 9A C3 98 C4 9A 03 C0 C2 9A C3 9A C4 98
+R 00 00 00 00
+T 46 00 59 91 49 91 08 95
+R 00 00 00 00

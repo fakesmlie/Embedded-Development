@@ -1,0 +1,115 @@
+#include"iom16v.h"
+#include"macros.h"
+//#include"led.h"
+//#include"key.h"
+#include"Nixie.h"
+//#include"adc.h"
+//#include"uart.h"
+
+void switch_open(unsigned int TEM)
+{
+
+    switch(TEM)		//位码输出
+	{
+		case 1:PORTA|=BIT(PA1);PORTA|=BIT(PA2);PORTA&=~BIT(PA3);break;
+		case 2:PORTA&=~BIT(PA1);PORTA&=~BIT(PA2);PORTA&=~BIT(PA3);break;
+		case 3:PORTA|=BIT(PA1);PORTA&=~BIT(PA2);PORTA&=~BIT(PA3);break;
+	}
+
+}
+
+
+
+
+void main(void)
+{
+	//Key_Init();
+	//LED_Init();
+   
+   unsigned int addata;
+   Nixie_Init();
+   PORTA&=~BIT(PA0);
+   DDRA&=~BIT(PA0);//输入
+   SFIOR = 0; //连续转换模式 
+   ADMUX = 0x00; // ADC0单端输入 AVCC参考电压  5V
+  // ADCSRA = 0xC0; //启动AD转换, 并开始转换   位7—ADEN  写入“1”时使能ADC，写入“0”关闭ADC
+  // while ((ADCSRA & 0x10) == 0); //等到转换结束
+  // addata = ADCL; //读取ADC数据 低位
+  // addata = addata + ADCH * 256; //读取ADC数据 低位 + 高位 
+  // ADCSRA |= 0x10;
+   //addata = addata / 1024.0 * 5000; //计算电压
+
+   
+   
+   
+   
+   
+   
+    DDRA|=BIT(PA1);                    // PA1设为输出
+  //  PORTA&=~BIT(PA1);   //PA1设置为低电平  TME2
+	PORTA|=BIT(PA1);   //                 TME1
+	//PORTA|=BIT(PA1);  //                 TME3  
+                  
+	DDRA|=BIT(PA2);                    // PA2设为输出
+  //  PORTA&=~BIT(PA2);  //PA2设置为低电平
+	PORTA|=BIT(PA2);
+	//PORTA&=~BIT(PA2);  
+                 
+	DDRA|=BIT(PA3);                    // PA3设为输出
+  //  PORTA&=~BIT(PA3);    //PA3设置为低电平 
+	PORTA|=BIT(PA3); 
+
+
+	
+	while(1)
+	{
+	switch_open(2);
+	
+	
+	
+	
+ 
+   ADCSRA = 0xC0; //启动AD转换, 并开始转换   位7—ADEN  写入“1”时使能ADC，写入“0”关闭ADC
+   while ((ADCSRA & 0x10) == 0); //等到转换结束
+   addata = ADCL; //读取ADC数据 低位
+   addata = addata + ADCH * 256; //读取ADC数据 低位 + 高位 
+   ADCSRA |= 0x10;
+   addata = addata / 1024.0 * 5000;//计算电压
+   
+   
+   Nixie(1,addata/1000);
+   Nixie(2,addata/100%10);
+   Nixie(3,addata/10%10);
+   Nixie(4,addata%10);
+   
+   
+
+	
+
+
+	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//自发收的配置
+
+/* 		if(RX_flag)
+		{
+ 		   RX_flag=0;
+ 		   USART_Send(RX_Buffer);
+		   PORTB&=~BIT(2);
+ 
+ 		 }*/

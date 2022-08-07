@@ -1,0 +1,58 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+//#include"uart.h"
+
+
+extern unsigned char RX_Buffer=0x00, RX_flag=0;
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+
+
+void main(void)
+{
+ //	USART_Init();
+	Key_Init();
+	LED_Init();
+	
+	while(1)
+	{
+	Key_1();
+	Key_2();
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//自发收的配置
+
+/* 		if(RX_flag)
+		{
+ 		   RX_flag=0;
+ 		   USART_Send(RX_Buffer);
+		   PORTB&=~BIT(2);
+ 
+ 		 }*/

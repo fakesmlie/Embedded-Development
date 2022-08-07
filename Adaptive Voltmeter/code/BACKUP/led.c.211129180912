@@ -1,0 +1,25 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+
+
+
+/*** LED初始化函数 ***/
+/******************************************************************************/
+void LED_Init(void)
+{ 
+ 	DDRB|=BIT(2);    //PB2端口皆设置为输出端口
+	DDRB|=BIT(3);    //PB2端口皆设置为输出端口
+	DDRB|=BIT(4);    //PB2端口皆设置为输出端口
+	PORTB|=BIT(2);
+	PORTB|=BIT(3);
+	PORTB|=BIT(4);
+//	DDRB=0x1c;   //0001 1100
+//	PORTB=0x1c;  //0001 1100
+/*
+    PORTB&=~BIT(2);   //电亮LED灯代码 LED1 LED2 LED3
+	PORTB&=~BIT(3);   
+	PORTB&=~BIT(4);
+	PORTB|=BIT(4);   //关LED代码   
+*/
+}

@@ -1,0 +1,7 @@
+#ifndef ___Nixie_h
+#define ___Nixie_h
+
+void Nixie_Init(void);
+
+
+#endif

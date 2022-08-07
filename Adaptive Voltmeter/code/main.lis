@@ -1,0 +1,419 @@
+                        .module main.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile main.c
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+ 0000                   .dbfunc e main _main fV
+ 0000           ;        voltage -> R12,R13
+ 0000           ;          voule -> R10,R11
+                        .even
+ 0000           _main::
+ 0000                   .dbline -1
+ 0000                   .dbline 11
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include <AVRdef.h>
+ 0000           ; #include"led.h"
+ 0000           ; #include"key.h"
+ 0000           ; #include"Nixie.h"
+ 0000           ; #include"adc.h"
+ 0000           ; #include"uart.h"
+ 0000           ; 
+ 0000           ; 
+ 0000           ; void main(void)
+ 0000           ; {
+ 0000                   .dbline 15
+ 0000           ; 
+ 0000           ;     unsigned int voltage;
+ 0000           ;       unsigned int voule;
+ 0000           ;       switch_open(3);
+ 0000 03E0              ldi R16,3
+ 0002 10E0              ldi R17,0
+ 0004 0E940000          xcall _switch_open
+ 0008                   .dbline 17
+ 0008           ;       //Key_Init();
+ 0008           ;       LED_Init();
+ 0008 0E940000          xcall _LED_Init
+ 000C                   .dbline 18
+ 000C           ;     ADC_Init();
+ 000C 0E940000          xcall _ADC_Init
+ 0010                   .dbline 19
+ 0010           ;     Nixie_Init();
+ 0010 0E940000          xcall _Nixie_Init
+ 0014                   .dbline 20
+ 0014           ;       UART_Init();
+ 0014 0E940000          xcall _UART_Init
+ 0018 0CC1              xjmp L3
+ 001A           L2:
+ 001A                   .dbline 24
+ 001A           ;     
+ 001A           ;       
+ 001A           ;       while(1)
+ 001A           ;       {
+ 001A                   .dbline 25
+ 001A           ;       delay_ms(1);
+ 001A 01E0              ldi R16,1
+ 001C 10E0              ldi R17,0
+ 001E 0E940000          xcall _delay_ms
+ 0022                   .dbline 27
+ 0022           ;       //switch_open(2);
+ 0022           ;       if(voltage_AD()>10&&voltage_AD()<1200)
+ 0022 0E940000          xcall _voltage_AD
+ 0026 8AE0              ldi R24,10
+ 0028 90E0              ldi R25,0
+ 002A 8017              cp R24,R16
+ 002C 9107              cpc R25,R17
+ 002E 08F0              brlo X6
+ 0030 87C0              xjmp L5
+ 0032           X6:
+ 0032           X0:
+ 0032 0E940000          xcall _voltage_AD
+ 0036 003B              cpi R16,176
+ 0038 E4E0              ldi R30,4
+ 003A 1E07              cpc R17,R30
+ 003C 08F0              brlo X7
+ 003E 80C0              xjmp L5
+ 0040           X7:
+ 0040           X1:
+ 0040                   .dbline 28
+ 0040           ;       {
+ 0040                   .dbline 29
+ 0040           ;       if(voltage_AD()<240)
+ 0040 0E940000          xcall _voltage_AD
+ 0044 A801              movw R20,R16
+ 0046 003F              cpi R16,240
+ 0048 E0E0              ldi R30,0
+ 004A 1E07              cpc R17,R30
+ 004C 08F0              brlo X8
+ 004E 37C0              xjmp L7
+ 0050           X8:
+ 0050           X2:
+ 0050                   .dbline 30
+ 0050           ;       {
+ 0050                   .dbline 31
+ 0050           ;         switch_open(1);
+ 0050 01E0              ldi R16,1
+ 0052 10E0              ldi R17,0
+ 0054 0E940000          xcall _switch_open
+ 0058                   .dbline 32
+ 0058           ;         delay_ms(2);
+ 0058 02E0              ldi R16,2
+ 005A 10E0              ldi R17,0
+ 005C 0E940000          xcall _delay_ms
+ 0060                   .dbline 33
+ 0060           ;         voltage=voltage_AD();
+ 0060 0E940000          xcall _voltage_AD
+ 0064 6801              movw R12,R16
+ 0066                   .dbline 34
+ 0066           ;         voule=(voltage*0.198)*2.172;
+ 0066 00E0              ldi R16,<L9
+ 0068 10E0              ldi R17,>L9
+ 006A 0E940000          xcall elpm32
+ 006E 1801              movw R2,R16
+ 0070 2901              movw R4,R18
+ 0072 00E0              ldi R16,<L10
+ 0074 10E0              ldi R17,>L10
+ 0076 0E940000          xcall elpm32
+ 007A 3801              movw R6,R16
+ 007C 4901              movw R8,R18
+ 007E 8601              movw R16,R12
+ 0080 0E940000          xcall uint2fp
+ 0084 3A93              st -y,R19
+ 0086 2A93              st -y,R18
+ 0088 1A93              st -y,R17
+ 008A 0A93              st -y,R16
+ 008C 8301              movw R16,R6
+ 008E 9401              movw R18,R8
+ 0090 0E940000          xcall fpmule2x
+ 0094 8101              movw R16,R2
+ 0096 9201              movw R18,R4
+ 0098 0E940000          xcall fpmule2
+ 009C 0E940000          xcall fpint
+ 00A0 5801              movw R10,R16
+ 00A2                   .dbline 35
+ 00A2           ;         ADC_show(voule);
+ 00A2 0E940000          xcall _ADC_show
+ 00A6                   .dbline 36
+ 00A6           ;         LED_open(1);
+ 00A6 01E0              ldi R16,1
+ 00A8 0E940000          xcall _LED_open
+ 00AC                   .dbline 37
+ 00AC           ;         switch_open(3);
+ 00AC 03E0              ldi R16,3
+ 00AE 10E0              ldi R17,0
+ 00B0 0E940000          xcall _switch_open
+ 00B4                   .dbline 39
+ 00B4           ;        // delay_ms(1);
+ 00B4           ;         UART_Send_String("1档：",5);
+ 00B4 25E0              ldi R18,5
+ 00B6 00E0              ldi R16,<L11
+ 00B8 10E0              ldi R17,>L11
+ 00BA 0E940000          xcall _UART_Send_String
+ 00BE                   .dbline 40
+ 00BE           ;       }
+ 00BE           L7:
+ 00BE                   .dbline 41
+ 00BE           ;       if(voltage_AD()>240)
+ 00BE 0E940000          xcall _voltage_AD
+ 00C2 7801              movw R14,R16
+ 00C4 80EF              ldi R24,240
+ 00C6 90E0              ldi R25,0
+ 00C8 8017              cp R24,R16
+ 00CA 9107              cpc R25,R17
+ 00CC 08F0              brlo X9
+ 00CE 38C0              xjmp L12
+ 00D0           X9:
+ 00D0           X3:
+ 00D0                   .dbline 42
+ 00D0           ;       {
+ 00D0                   .dbline 43
+ 00D0           ;         switch_open(2);
+ 00D0 02E0              ldi R16,2
+ 00D2 10E0              ldi R17,0
+ 00D4 0E940000          xcall _switch_open
+ 00D8                   .dbline 45
+ 00D8           ;       //  ADC_show(voule);
+ 00D8           ;         delay_ms(2);
+ 00D8 02E0              ldi R16,2
+ 00DA 10E0              ldi R17,0
+ 00DC 0E940000          xcall _delay_ms
+ 00E0                   .dbline 46
+ 00E0           ;         voltage=voltage_AD();
+ 00E0 0E940000          xcall _voltage_AD
+ 00E4 7801              movw R14,R16
+ 00E6 6701              movw R12,R14
+ 00E8                   .dbline 47
+ 00E8           ;         voule=(voltage*0.198)*10.334;
+ 00E8 00E0              ldi R16,<L14
+ 00EA 10E0              ldi R17,>L14
+ 00EC 0E940000          xcall elpm32
+ 00F0 1801              movw R2,R16
+ 00F2 2901              movw R4,R18
+ 00F4 00E0              ldi R16,<L10
+ 00F6 10E0              ldi R17,>L10
+ 00F8 0E940000          xcall elpm32
+ 00FC 3801              movw R6,R16
+ 00FE 4901              movw R8,R18
+ 0100 8601              movw R16,R12
+ 0102 0E940000          xcall uint2fp
+ 0106 3A93              st -y,R19
+ 0108 2A93              st -y,R18
+ 010A 1A93              st -y,R17
+ 010C 0A93              st -y,R16
+ 010E 8301              movw R16,R6
+ 0110 9401              movw R18,R8
+ 0112 0E940000          xcall fpmule2x
+ 0116 8101              movw R16,R2
+ 0118 9201              movw R18,R4
+ 011A 0E940000          xcall fpmule2
+ 011E 0E940000          xcall fpint
+ 0122 5801              movw R10,R16
+ 0124                   .dbline 48
+ 0124           ;         ADC_show(voule);
+ 0124 0E940000          xcall _ADC_show
+ 0128                   .dbline 49
+ 0128           ;         LED_open(2);
+ 0128 02E0              ldi R16,2
+ 012A 0E940000          xcall _LED_open
+ 012E                   .dbline 50
+ 012E           ;         switch_open(3);
+ 012E 03E0              ldi R16,3
+ 0130 10E0              ldi R17,0
+ 0132 0E940000          xcall _switch_open
+ 0136                   .dbline 53
+ 0136           ;        // delay_ms(1);
+ 0136           ;       //  ADC_show(voule);
+ 0136           ;         UART_Send_String("2档：",5);
+ 0136 25E0              ldi R18,5
+ 0138 00E0              ldi R16,<L15
+ 013A 10E0              ldi R17,>L15
+ 013C 0E940000          xcall _UART_Send_String
+ 0140                   .dbline 54
+ 0140           ;        }
+ 0140           L12:
+ 0140                   .dbline 55
+ 0140           ;       }
+ 0140           L5:
+ 0140                   .dbline 56
+ 0140           ;       if(voltage_AD()>1200)
+ 0140 0E940000          xcall _voltage_AD
+ 0144 7801              movw R14,R16
+ 0146 80EB              ldi R24,1200
+ 0148 94E0              ldi R25,4
+ 014A 8017              cp R24,R16
+ 014C 9107              cpc R25,R17
+ 014E 08F0              brlo X10
+ 0150 3EC0              xjmp L16
+ 0152           X10:
+ 0152           X4:
+ 0152                   .dbline 57
+ 0152           ;       {
+ 0152                   .dbline 60
+ 0152           ;       //  switch_open(3);
+ 0152           ;       //  delay_ms(1);
+ 0152           ;         voltage=voltage_AD();
+ 0152 0E940000          xcall _voltage_AD
+ 0156 7801              movw R14,R16
+ 0158 6701              movw R12,R14
+ 015A                   .dbline 61
+ 015A           ;         voule=(voltage*0.199)*20.656-80;
+ 015A 00E0              ldi R16,<L18
+ 015C 10E0              ldi R17,>L18
+ 015E 0E940000          xcall elpm32
+ 0162 1801              movw R2,R16
+ 0164 2901              movw R4,R18
+ 0166 00E0              ldi R16,<L19
+ 0168 10E0              ldi R17,>L19
+ 016A 0E940000          xcall elpm32
+ 016E 3801              movw R6,R16
+ 0170 4901              movw R8,R18
+ 0172 8601              movw R16,R12
+ 0174 0E940000          xcall uint2fp
+ 0178 3A93              st -y,R19
+ 017A 2A93              st -y,R18
+ 017C 1A93              st -y,R17
+ 017E 0A93              st -y,R16
+ 0180 8301              movw R16,R6
+ 0182 9401              movw R18,R8
+ 0184 0E940000          xcall fpmule2x
+ 0188 8101              movw R16,R2
+ 018A 9201              movw R18,R4
+ 018C 0E940000          xcall fpmule2
+ 0190 1801              movw R2,R16
+ 0192 2901              movw R4,R18
+ 0194 00E0              ldi R16,<L20
+ 0196 10E0              ldi R17,>L20
+ 0198 0E940000          xcall elpm32
+ 019C 3A93              st -y,R19
+ 019E 2A93              st -y,R18
+ 01A0 1A93              st -y,R17
+ 01A2 0A93              st -y,R16
+ 01A4 8101              movw R16,R2
+ 01A6 9201              movw R18,R4
+ 01A8 0E940000          xcall fpsub2
+ 01AC 0E940000          xcall fpint
+ 01B0 5801              movw R10,R16
+ 01B2                   .dbline 62
+ 01B2           ;         ADC_show(voule);
+ 01B2 0E940000          xcall _ADC_show
+ 01B6                   .dbline 63
+ 01B6           ;         LED_open(3);
+ 01B6 03E0              ldi R16,3
+ 01B8 0E940000          xcall _LED_open
+ 01BC                   .dbline 64
+ 01BC           ;         switch_open(3);
+ 01BC 03E0              ldi R16,3
+ 01BE 10E0              ldi R17,0
+ 01C0 0E940000          xcall _switch_open
+ 01C4                   .dbline 66
+ 01C4           ;       //  delay_ms(1);
+ 01C4           ;         UART_Send_String("3档：",5);
+ 01C4 25E0              ldi R18,5
+ 01C6 00E0              ldi R16,<L21
+ 01C8 10E0              ldi R17,>L21
+ 01CA 0E940000          xcall _UART_Send_String
+ 01CE                   .dbline 67
+ 01CE           ;       }
+ 01CE           L16:
+ 01CE                   .dbline 68
+ 01CE           ;       USART_Send(voule/1000+0x30);
+ 01CE 28EE              ldi R18,1000
+ 01D0 33E0              ldi R19,3
+ 01D2 8501              movw R16,R10
+ 01D4 0E940000          xcall div16u
+ 01D8 005D              subi R16,208  ; offset = 48
+ 01DA 1F4F              sbci R17,255
+ 01DC 0E940000          xcall _USART_Send
+ 01E0                   .dbline 69
+ 01E0           ;       USART_Send('.');
+ 01E0 0EE2              ldi R16,46
+ 01E2 0E940000          xcall _USART_Send
+ 01E6                   .dbline 70
+ 01E6           ;       USART_Send(voule%1000/100+0x30);
+ 01E6 28EE              ldi R18,1000
+ 01E8 33E0              ldi R19,3
+ 01EA 8501              movw R16,R10
+ 01EC 0E940000          xcall mod16u
+ 01F0 24E6              ldi R18,100
+ 01F2 30E0              ldi R19,0
+ 01F4 0E940000          xcall div16u
+ 01F8 005D              subi R16,208  ; offset = 48
+ 01FA 1F4F              sbci R17,255
+ 01FC 0E940000          xcall _USART_Send
+ 0200                   .dbline 71
+ 0200           ;       USART_Send(voule%100/10+0x30);
+ 0200 24E6              ldi R18,100
+ 0202 30E0              ldi R19,0
+ 0204 8501              movw R16,R10
+ 0206 0E940000          xcall mod16u
+ 020A 2AE0              ldi R18,10
+ 020C 30E0              ldi R19,0
+ 020E 0E940000          xcall div16u
+ 0212 005D              subi R16,208  ; offset = 48
+ 0214 1F4F              sbci R17,255
+ 0216 0E940000          xcall _USART_Send
+ 021A                   .dbline 72
+ 021A           ;       USART_Send(voule%10+0x30);
+ 021A 2AE0              ldi R18,10
+ 021C 30E0              ldi R19,0
+ 021E 8501              movw R16,R10
+ 0220 0E940000          xcall mod16u
+ 0224 005D              subi R16,208  ; offset = 48
+ 0226 1F4F              sbci R17,255
+ 0228 0E940000          xcall _USART_Send
+ 022C                   .dbline 73
+ 022C           ;       USART_Send('V');
+ 022C 06E5              ldi R16,86
+ 022E 0E940000          xcall _USART_Send
+ 0232                   .dbline 74
+ 0232           ;       }
+ 0232           L3:
+ 0232                   .dbline 23
+ 0232 F3CE              xjmp L2
+ 0234           X5:
+ 0234                   .dbline -2
+ 0234           L1:
+ 0234                   .dbline 0 ; func end
+ 0234 0895              ret
+ 0236                   .dbsym r voltage 12 i
+ 0236                   .dbsym r voule 10 i
+ 0236                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+ 0000           L21:
+ 0000                   .blkb 6
+                        .area idata
+ 0000 33B5B5A3BA00      .byte 51,181,181,163,186,0
+                        .area data(ram, con, rel)
+ 0006                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+                        .area lit(rom, con, rel)
+ 0000           L20:
+ 0000 0000A042          .word 0x0,0x42a0
+ 0004           L19:
+ 0004 A8C64B3E          .word 0xc6a8,0x3e4b
+ 0008           L18:
+ 0008 7D3FA541          .word 0x3f7d,0x41a5
+                        .area data(ram, con, rel)
+ 0006                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+ 0006           L15:
+ 0006                   .blkb 6
+                        .area idata
+ 0006 32B5B5A3BA00      .byte 50,181,181,163,186,0
+                        .area data(ram, con, rel)
+ 000C                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+                        .area lit(rom, con, rel)
+ 000C           L14:
+ 000C 10582541          .word 0x5810,0x4125
+                        .area data(ram, con, rel)
+ 000C                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+ 000C           L11:
+ 000C                   .blkb 6
+                        .area idata
+ 000C 31B5B5A3BA00      .byte 49,181,181,163,186,0
+                        .area data(ram, con, rel)
+ 0012                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\main.c
+                        .area lit(rom, con, rel)
+ 0010           L10:
+ 0010 83C04A3E          .word 0xc083,0x3e4a
+ 0014           L9:
+ 0014 0C020B40          .word 0x20c,0x400b
+ 0018           ; }
+ 0018           ; 

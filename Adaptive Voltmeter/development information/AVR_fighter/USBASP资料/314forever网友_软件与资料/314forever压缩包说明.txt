@@ -1,0 +1,12 @@
+注:314forever.rar压缩包由网友：314forever 提供
+
+其中包含了:
+    1.配合AVR_fighter实现自动调速度的固件及源码!
+    2.一个bootloadHID工具及源码,有了它不需要装驱动就能升级USBasp
+
+以下是 314forever 网友的说明:
+    速度一共是五档：1.5MHz、750kHz、375kHz、98.75kHz和32kHz，原速度跳线无效；已经用Mega8、Tiny13和S51进行了测试，S5x依旧是字节写方式。附件里面我带了一个USB口的Bootload，HID类的不需要驱动；使用时Mega8的熔丝位设置如下LFuse = 0xEF、HFuse = 0xD8，再把bootloadHID.hex烧进Mega8中，然后要下载程序时先把PC2处的跳线（就是那个选择SPI速度的跳线）插上，然后再插入USB口，系统会自动把驱动装好，下载程序命令格式如下（假设bootloadHID.exe文件在D:\Workspace\下，要下载的程序名为main.hex）： 
+
+D:\Workspace\bootloadHID -r main.hex 
+
+下载完成后不需要将编程器拔下就可以直接使用。

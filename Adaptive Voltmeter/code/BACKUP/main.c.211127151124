@@ -1,0 +1,42 @@
+#include"iom16v.h"
+#include"macros.h"
+
+
+
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+
+/*** LED初始化函数 ***/
+/******************************************************************************/
+void LED_Init(void)
+{
+ 	DDRB|=BIT(1);   //PB2端口皆设置为输出端口
+	DDRB|=BIT(2);
+	DDRB|=BIT(3);
+}
+
+
+
+void main()
+{
+
+
+    LED_Init();
+	PORTB&=~BIT(1);
+	PORTB&=~BIT(2);
+	PORTB&=~BIT(3);
+
+
+
+
+
+}

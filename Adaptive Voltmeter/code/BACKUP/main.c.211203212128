@@ -1,0 +1,45 @@
+#include"iom16v.h"
+#include <AVRdef.h>
+//#include"led.h"
+//#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+//#include"uart.h"
+
+
+
+
+
+void main(void)
+{
+
+    unsigned int voltage;
+	//Key_Init();
+	//LED_Init();
+     ADC_Init();
+     Nixie_Init();
+   
+	
+	while(1)
+	{
+	switch_open(1);
+	voltage=(voltage_AD())*3.98-2966+200;
+	//ADC_show(voltage*10);
+	Nixie(1,voltage*10/1000);
+    Nixie(2,voltag*10/e100%10);
+    Nixie(3,voltage*10/10%10);
+    Nixie(4,voltage*10%10);
+	
+
+	
+	
+   
+   
+
+	
+
+
+	
+	}
+}
+

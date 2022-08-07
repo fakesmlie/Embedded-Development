@@ -1,0 +1,113 @@
+XL
+H 3 areas A global symbols
+M UART.c
+S mod16s Ref0000
+S div16s Ref0000
+S push_xgsetF000 Ref0000
+S pop_xgsetF000 Ref0000
+S mod8u Ref0000
+S div8u Ref0000
+A text size D6 flags 0
+dbfile UART.c
+dbfile D:\桌面\自适应电压表\程序\2.1最终\UART.c
+dbfunc e UART_Init 0 fV
+dbsym r BAUD 10 I
+dbline FFFFFFFF 0
+dbline A 0
+dbline D 0
+dbline E 6
+dbline 10 8
+dbline 11 A
+dbline 12 10
+dbline 13 16
+dbline 14 18
+dbline 15 1E
+dbline 16 24
+dbline 17 2A
+dbline 18 30
+dbline 19 34
+dbline 1A 36
+dbline FFFFFFFE 42
+dbline 0 42
+dbfunc e USART_Send 44 fV
+dbsym r Data 10 c
+dbline FFFFFFFF 44
+dbline 21 44
+dbline 22 44
+dbline 22 44
+dbline 23 48
+dbline 24 4A
+dbline 24 4A
+dbline 25 4E
+dbline FFFFFFFE 50
+dbline 0 50
+dbfunc e UART_Send_String 52 fV
+dbsym r length 16 c
+dbsym r str 14 pc
+dbline FFFFFFFF 5A
+dbline 2B 5A
+dbline 2E 5C
+dbline 2F 5C
+dbline 30 62
+dbline 31 66
+dbline 2D 66
+dbline FFFFFFFE 70
+dbline 0 70
+dbfunc e USART_Send_voltage 74 fV
+dbsym r voule A c
+dbline FFFFFFFF 78
+dbline 37 78
+dbline 38 78
+dbline 39 80
+dbline 3A 92
+dbline 3B 96
+dbline 3C B0
+dbline 3D C2
+dbline 3E CE
+dbline FFFFFFFE D2
+dbline 0 D2
+S _USART_Send_voltage Def0074
+S _UART_Send_String Def0052
+S _UART_Init Def0000
+S _USART_Send Def0044
+A data size 15 flags 20
+dbfile D:\桌面\自适应电压表\程序\2.1最终\UART.c
+A idata size 15 flags 0
+T 00 00 81 B3 8E 7F 81 BB 89 9A 59 9A 8A B1 88 61
+R 00 00 00 00
+T 0E 00 8A B9 8A B1 80 6C 8A B9 52 98 80 B5 86 60
+R 00 00 00 00
+T 1C 00 80 BD 80 B5 8F 7B 80 BD 80 B5 8F 7C 80 BD
+R 00 00 00 00
+T 2A 00 80 B5 87 7F 80 BD 0C E0 10 E0 09 B9 18 01
+R 00 00 00 00
+T 38 00 23 2C 33 24 27 FC 30 94 20 BC 08 95
+R 00 00 00 00
+T 44 00 5D 9B FE CF 0C B9 5E 9B FE CF 5E 9A 08 95
+R 00 00 00 00
+T 52 00 0E 94 00 00 62 2F A8 01 05 C0 FA 01 00 81
+R 00 00 00 00 12 04 02 00
+T 60 00 F1 DF 4F 5F 5F 4F 26 2E 33 24 61 50 22 20
+R 00 00 00 00
+T 6E 00 B1 F7 0C 94 00 00
+R 00 00 00 00 12 06 03 00
+T 74 00 AA 92 A0 2E 24 E1 00 E0 10 E0 E9 DF 28 EE
+R 00 00 00 00 20 08 01 00 00 00 40 0A 01 00 00 00
+T 82 00 33 E0 0A 2D 11 27 0E 94 00 00 00 5D 1F 4F
+R 00 00 00 00 12 0A 01 00
+T 90 00 D9 DF 0E E2 D7 DF 28 EE 33 E0 0A 2D 11 27
+R 00 00 00 00
+T 9E 00 0E 94 00 00 24 E6 30 E0 0E 94 00 00 00 5D
+R 00 00 00 00 12 04 00 00 12 0C 01 00
+T AC 00 1F 4F CA DF 14 E6 0A 2D 0E 94 00 00 1A E0
+R 00 00 00 00 12 0C 04 00
+T BA 00 0E 94 00 00 00 5D C1 DF 1A E0 0A 2D
+R 00 00 00 00 12 04 05 00
+T C6 00 0E 94 00 00 00 5D BB DF 06 E5 B9 DF A9 90
+R 00 00 00 00 12 04 04 00
+T D4 00 08 95
+R 00 00 00 00
+T 00 00 B2 E2 B5 C3 CD A8 B5 C0 B5 C4 B5 E7 D1 B9
+R 00 00 02 00
+T 0E 00 D6 B5 CE AA A3 BA 00
+R 00 00 02 00

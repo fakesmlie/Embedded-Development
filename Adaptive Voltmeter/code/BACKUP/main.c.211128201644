@@ -1,0 +1,87 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+
+
+//波特率，晶振
+#define BAUD 9600
+#define FXTAL 8000000
+//串口接收完毕中断触发声明
+#pragma interrupt handler USART Received Ir: 12
+//变量定义：接收缓冲变量，接收标志位
+unsigned char RX_Buffer=0x00, RX_flag=0;
+
+//函数声明
+void USARI_Send(unsigned char);
+//串口初始化函数
+void USART_IO_Init(void)
+{
+     DDRD|=BIT(PD1);//PD1:TX为输出状态
+}
+
+//串口初始化函数
+void USART_Init(void)
+{
+ unsigned int Temp;
+ 
+ USART_IO_Init();
+ 
+ UCSRA=0x00;   //串口控制器A清零
+ UCSRB=0x00;   //串口控制器B清零
+ UCSRC|=BIT(URSEL)|BIT(UCSZ1)|BIT(UCSZ0);  //选择USCRC，异步操作，禁止检
+ 
+ Temp=(FXTAL/BAUD/16)-1;     //求出9600的波特率
+ UBRRH=((Temp>>8)&0x00ff);  //高位赋值
+ UBRRL=(Temp&0x00ff);      //低位赋值
+ 
+ UCSRB|=BIT(TXEN)|BIT(RXEN)|BIT(RXCIE);  //发送使能，接收使能，接收完毕中断
+ SREG|=BIT(7);  //全局中断使能
+
+}
+
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+
+
+void main(void)
+{
+USART_Init();
+while(1)
+{
+if(RX_flag)
+{
+ RX_flag=0;
+ USART_Send(RX_Buffer);
+ 
+}
+}
+}
+
+void USART_Send(unsigned char Date)
+{
+ while(!(UCSRA&(BIT(UDRE))));  //数据寄存器UDR是否为空？
+ UDR=Data;                     //UDR武值
+ while(!(UCSRA&(BIT(TXC))));   //数据是否已经发送完毕？
+ UCSRA|=BIT(TXC);               //清除发送完毕标志位
+}
+
+//串口接收完毕中断函数
+void USARI_Received_Ir()
+{
+UCSRB&=~BIT(RXCIE);     //接收完毕中断不使能
+RX_Buffer=UDR;         //读取UDR的数据
+RX_Flag=l;   //接收标志位置
+UCSRB=BIT(RXCIE);//接收完毕中断使能
+}

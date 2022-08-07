@@ -1,0 +1,10 @@
+#ifndef ___Nixie_h
+#define ___Nixie_h
+
+void Nixie_Init(void);
+void Nixie(unsigned char Location,unsigned char Number);
+
+extern unsigned char const NixieTable[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};// 0~9
+
+
+#endif

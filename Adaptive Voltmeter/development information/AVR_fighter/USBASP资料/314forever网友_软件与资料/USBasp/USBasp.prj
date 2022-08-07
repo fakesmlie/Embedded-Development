@@ -1,0 +1,28 @@
+[Project ID]
+Signature=UE Proj: v.1
+[Project Information]
+Use Relative Directory=1
+Relative to Project File=1
+Project Start=D807020003001B00160009000500000023
+Include Sub Directories=1
+Project Tagfile=
+Project Wordfile=
+Filter=
+Create Tagfile=0
+Working Time=33566
+[Files]
+0=usbconfig.h
+1=clock.c
+2=clock.h
+3=isp.c
+4=isp.h
+5=main.c
+6=Makefile
+[Open Files]
+Active File Display Mode=3
+Active File Index=0
+Open File Line0=2561
+Open File Pos0=3114
+Open File Window Pos0=2,3,-1,-1,-4,-23,22,22,766,400
+Open File0=.\main.c
+Open File1=

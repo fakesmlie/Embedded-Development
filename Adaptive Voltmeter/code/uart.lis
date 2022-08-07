@@ -1,0 +1,261 @@
+                        .module UART.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile UART.c
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\UART.c
+ 0000                   .dbfunc e UART_Init _UART_Init fV
+ 0000           ;           BAUD -> R16,R17
+                        .even
+ 0000           _UART_Init::
+ 0000                   .dbline -1
+ 0000                   .dbline 10
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include"macros.h"
+ 0000           ; #include"UART.h"
+ 0000           ; 
+ 0000           ; 
+ 0000           ; 
+ 0000           ; /*** LED初始化函数 ***/
+ 0000           ; /******************************************************************************/
+ 0000           ; void UART_Init(void)
+ 0000           ; {
+ 0000                   .dbline 13
+ 0000           ; 
+ 0000           ;     int BAUD;
+ 0000           ;     DDRD &= 0XFE;
+ 0000 81B3              in R24,0x11
+ 0002 8E7F              andi R24,254
+ 0004 81BB              out 0x11,R24
+ 0006                   .dbline 14
+ 0006           ;     DDRD |= 0X02;
+ 0006 899A              sbi 0x11,1
+ 0008                   .dbline 16
+ 0008           ; 
+ 0008           ;     UCSRA |= (1 << U2X);                        //倍速模式
+ 0008 599A              sbi 0xb,1
+ 000A                   .dbline 17
+ 000A           ;     UCSRB |= ((1 << RXEN )|(1 << TXEN));        //发送接受使能
+ 000A 8AB1              in R24,0xa
+ 000C 8861              ori R24,24
+ 000E 8AB9              out 0xa,R24
+ 0010                   .dbline 18
+ 0010           ;     UCSRB |= ( (1<< RXCIE)| (1<< TXCIE));       //发送接受结束中断使能
+ 0010 8AB1              in R24,0xa
+ 0012 806C              ori R24,192
+ 0014 8AB9              out 0xa,R24
+ 0016                   .dbline 19
+ 0016           ;     UCSRB &= ~(1 << UCSZ2);
+ 0016 5298              cbi 0xa,2
+ 0018                   .dbline 20
+ 0018           ;     UCSRC |= ((1 << UCSZ1)|(1 << UCSZ0));       //8位数据位
+ 0018 80B5              in R24,0x20
+ 001A 8660              ori R24,6
+ 001C 80BD              out 0x20,R24
+ 001E                   .dbline 21
+ 001E           ;     UCSRC &= ~(1 << UMSEL);                     //异步
+ 001E 80B5              in R24,0x20
+ 0020 8F7B              andi R24,191
+ 0022 80BD              out 0x20,R24
+ 0024                   .dbline 22
+ 0024           ;     UCSRC &= ~((1 << UPM1)|(1 << UPM0));        //无奇偶校验位
+ 0024 80B5              in R24,0x20
+ 0026 8F7C              andi R24,207
+ 0028 80BD              out 0x20,R24
+ 002A                   .dbline 23
+ 002A           ;     UCSRC &= ~(1 << USBS);                      //1位停止位
+ 002A 80B5              in R24,0x20
+ 002C 877F              andi R24,247
+ 002E 80BD              out 0x20,R24
+ 0030                   .dbline 24
+ 0030           ;     BAUD  = 12;                                 //波特率9600
+ 0030 0CE0              ldi R16,12
+ 0032 10E0              ldi R17,0
+ 0034                   .dbline 25
+ 0034           ;     UBRRL = (unsigned char)BAUD;
+ 0034 09B9              out 0x9,R16
+ 0036                   .dbline 26
+ 0036           ;     UBRRH = (unsigned char)(BAUD>>8);
+ 0036 1801              movw R2,R16
+ 0038 232C              mov R2,R3
+ 003A 3324              clr R3
+ 003C 27FC              sbrc R2,7
+ 003E 3094              com R3
+ 0040 20BC              out 0x20,R2
+ 0042                   .dbline -2
+ 0042           L1:
+ 0042                   .dbline 0 ; func end
+ 0042 0895              ret
+ 0044                   .dbsym r BAUD 16 I
+ 0044                   .dbend
+ 0044                   .dbfunc e USART_Send _USART_Send fV
+ 0044           ;           Data -> R16
+                        .even
+ 0044           _USART_Send::
+ 0044                   .dbline -1
+ 0044                   .dbline 33
+ 0044           ; 
+ 0044           ; }
+ 0044           ; 
+ 0044           ; 
+ 0044           ; //串口发送函数
+ 0044           ; void USART_Send(unsigned char Data)
+ 0044           ; {
+ 0044           L3:
+ 0044                   .dbline 34
+ 0044           ;         while(!(UCSRA&(BIT(UDRE))));        //数据寄存器UDR是否为空？
+ 0044           L4:
+ 0044                   .dbline 34
+ 0044 5D9B              sbis 0xb,5
+ 0046 FECF              rjmp L3
+ 0048           X0:
+ 0048                   .dbline 35
+ 0048           ;         UDR=Data;                            //UDR赋值
+ 0048 0CB9              out 0xc,R16
+ 004A           L6:
+ 004A                   .dbline 36
+ 004A           ;         while(!(UCSRA&(BIT(TXC))));            //数据是否已经发送完毕？
+ 004A           L7:
+ 004A                   .dbline 36
+ 004A 5E9B              sbis 0xb,6
+ 004C FECF              rjmp L6
+ 004E           X1:
+ 004E                   .dbline 37
+ 004E           ;         UCSRA|=BIT(TXC);                    //清除发送完毕标志位
+ 004E 5E9A              sbi 0xb,6
+ 0050                   .dbline -2
+ 0050           L2:
+ 0050                   .dbline 0 ; func end
+ 0050 0895              ret
+ 0052                   .dbsym r Data 16 c
+ 0052                   .dbend
+ 0052                   .dbfunc e UART_Send_String _UART_Send_String fV
+ 0052           ;         length -> R22
+ 0052           ;            str -> R20,R21
+                        .even
+ 0052           _UART_Send_String::
+ 0052 0E940000          xcall push_xgsetF000
+ 0056 622F              mov R22,R18
+ 0058 A801              movw R20,R16
+ 005A                   .dbline -1
+ 005A                   .dbline 43
+ 005A           ; }
+ 005A           ; 
+ 005A           ; 
+ 005A           ; /*发送字符串*/
+ 005A           ; void UART_Send_String(unsigned char* str, unsigned char length)
+ 005A           ; {
+ 005A 05C0              xjmp L11
+ 005C           L10:
+ 005C                   .dbline 46
+ 005C           ;       //unsigned char i=0;
+ 005C           ;      while(length--)
+ 005C           ;      {
+ 005C                   .dbline 47
+ 005C           ;             USART_Send(*str);
+ 005C FA01              movw R30,R20
+ 005E 0081              ldd R16,z+0
+ 0060 F1DF              xcall _USART_Send
+ 0062                   .dbline 48
+ 0062           ;             *str++;
+ 0062 4F5F              subi R20,255  ; offset = 1
+ 0064 5F4F              sbci R21,255
+ 0066                   .dbline 49
+ 0066           ;      }
+ 0066           L11:
+ 0066                   .dbline 45
+ 0066 262E              mov R2,R22
+ 0068 3324              clr R3
+ 006A 6150              subi R22,1
+ 006C 2220              tst R2
+ 006E B1F7              brne L10
+ 0070           X2:
+ 0070                   .dbline -2
+ 0070           L9:
+ 0070                   .dbline 0 ; func end
+ 0070 0C940000          xjmp pop_xgsetF000
+ 0074                   .dbsym r length 22 c
+ 0074                   .dbsym r str 20 pc
+ 0074                   .dbend
+ 0074                   .dbfunc e USART_Send_voltage _USART_Send_voltage fV
+ 0074           ;          voule -> R10
+                        .even
+ 0074           _USART_Send_voltage::
+ 0074 AA92              st -y,R10
+ 0076 A02E              mov R10,R16
+ 0078                   .dbline -1
+ 0078                   .dbline 55
+ 0078           ; 
+ 0078           ; }
+ 0078           ; 
+ 0078           ; //电压发送函数
+ 0078           ; void USART_Send_voltage(unsigned char voule)
+ 0078           ; {
+ 0078                   .dbline 56
+ 0078           ;     UART_Send_String("测得通道的电压值为：",20);
+ 0078 24E1              ldi R18,20
+ 007A 00E0              ldi R16,<L14
+ 007C 10E0              ldi R17,>L14
+ 007E E9DF              xcall _UART_Send_String
+ 0080                   .dbline 57
+ 0080           ;       USART_Send(voule/1000+0x30);
+ 0080 28EE              ldi R18,1000
+ 0082 33E0              ldi R19,3
+ 0084 0A2D              mov R16,R10
+ 0086 1127              clr R17
+ 0088 0E940000          xcall div16s
+ 008C 005D              subi R16,208  ; offset = 48
+ 008E 1F4F              sbci R17,255
+ 0090 D9DF              xcall _USART_Send
+ 0092                   .dbline 58
+ 0092           ;       USART_Send('.');
+ 0092 0EE2              ldi R16,46
+ 0094 D7DF              xcall _USART_Send
+ 0096                   .dbline 59
+ 0096           ;       USART_Send(voule%1000/100+0x30);
+ 0096 28EE              ldi R18,1000
+ 0098 33E0              ldi R19,3
+ 009A 0A2D              mov R16,R10
+ 009C 1127              clr R17
+ 009E 0E940000          xcall mod16s
+ 00A2 24E6              ldi R18,100
+ 00A4 30E0              ldi R19,0
+ 00A6 0E940000          xcall div16s
+ 00AA 005D              subi R16,208  ; offset = 48
+ 00AC 1F4F              sbci R17,255
+ 00AE CADF              xcall _USART_Send
+ 00B0                   .dbline 60
+ 00B0           ;       USART_Send(voule%100/10+0x30);
+ 00B0 14E6              ldi R17,100
+ 00B2 0A2D              mov R16,R10
+ 00B4 0E940000          xcall mod8u
+ 00B8 1AE0              ldi R17,10
+ 00BA 0E940000          xcall div8u
+ 00BE 005D              subi R16,208    ; addi 48
+ 00C0 C1DF              xcall _USART_Send
+ 00C2                   .dbline 61
+ 00C2           ;       USART_Send(voule%10+0x30);
+ 00C2 1AE0              ldi R17,10
+ 00C4 0A2D              mov R16,R10
+ 00C6 0E940000          xcall mod8u
+ 00CA 005D              subi R16,208    ; addi 48
+ 00CC BBDF              xcall _USART_Send
+ 00CE                   .dbline 62
+ 00CE           ;       USART_Send('V');                  //清除发送完毕标志位
+ 00CE 06E5              ldi R16,86
+ 00D0 B9DF              xcall _USART_Send
+ 00D2                   .dbline -2
+ 00D2           L13:
+ 00D2                   .dbline 0 ; func end
+ 00D2 A990              ld R10,y+
+ 00D4 0895              ret
+ 00D6                   .dbsym r voule 10 c
+ 00D6                   .dbend
+                        .area data(ram, con, rel)
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\UART.c
+ 0000           L14:
+ 0000                   .blkb 21
+                        .area idata
+ 0000 B2E2B5C3CDA8B5C0B5C4B5E7D1B9D6B5  .byte 178,226,181,195,205,168,181,192,181,196,181,231,209,185,214,181
+ 0010 CEAAA3BA00        .byte 206,170,163,186,0
+                        .area data(ram, con, rel)
+ 0015                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\UART.c
+ 0015           ; }

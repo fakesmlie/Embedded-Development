@@ -1,0 +1,124 @@
+XL
+H 2 areas D global symbols
+M ADC.c
+S elpm32 Ref0000
+S mod16u Ref0000
+S div16u Ref0000
+S fpint Ref0000
+S _Nixie Ref0000
+S empy16s Ref0000
+S fpmule2 Ref0000
+S fpdiv2x Ref0000
+S uint2fp Ref0000
+A text size 112 flags 0
+dbfile ADC.c
+dbfile D:\桌面\自适应电压表\程序\2.1最终\ADC.c
+dbfunc e ADC_Init 0 fV
+dbline FFFFFFFF 0
+dbline C 0
+dbline D 0
+dbline E 2
+dbline 10 4
+dbline 11 6
+dbline 13 8
+dbline 14 A
+dbline 16 C
+dbline 17 E
+dbline 18 10
+dbline 19 14
+dbline FFFFFFFE 16
+dbline 0 16
+dbfunc e switch_open 18 fV
+dbsym r TEM 10 i
+dbline FFFFFFFF 18
+dbline 24 18
+dbline 26 18
+dbline 28 32
+dbline 28 34
+dbline 28 36
+dbline 28 38
+dbline 29 3A
+dbline 29 3C
+dbline 29 3E
+dbline 29 40
+dbline 2A 42
+dbline 2A 44
+dbline 2A 46
+dbline 2A 48
+dbline FFFFFFFE 48
+dbline 0 48
+dbfunc e voltage_AD 4A fi
+dbsym r addata A i
+dbline FFFFFFFF 4E
+dbline 33 4E
+dbline 36 4E
+dbline 37 52
+dbline 37 52
+dbline 38 56
+dbline 39 5A
+dbline 3A 6A
+dbline 3B 6C
+dbline 3C A8
+dbline FFFFFFFE A8
+dbline 0 A8
+dbfunc e ADC_show AE fV
+dbsym r mum A i
+dbline FFFFFFFF B4
+dbline 42 B4
+dbline 43 B4
+dbline 44 C6
+dbline 45 E0
+dbline 46 FA
+dbline FFFFFFFE 10C
+dbline 0 10C
+S _switch_open Def0018
+S _ADC_Init Def0000
+S _voltage_AD Def004A
+S _ADC_show Def00AE
+A lit size 8 flags 0
+T 00 00 D1 9A D9 9A D2 9A DA 9A D3 9A DB 9A D8 98
+R 00 00 00 00
+T 0E 00 D0 98 22 24 20 BE 27 B8 08 95
+R 00 00 00 00
+T 18 00 01 30 E0 E0 1E 07 49 F0 02 30 E0 E0 1E 07
+R 00 00 00 00
+T 26 00 49 F0 03 30 E0 E0 1E 07 49 F0 0B C0 D9 9A
+R 00 00 00 00
+T 34 00 DA 9A DB 98 07 C0 D9 98 DA 98 DB 98 03 C0
+R 00 00 00 00
+T 42 00 D9 9A DA 98 DB 98 08 95
+R 00 00 00 00
+T 4A 00 AA 92 BA 92 80 EC 86 B9 34 9B FE CF A4 B0
+R 00 00 00 00
+T 58 00 BB 24 25 B1 33 27 00 E0 11 E0 0E 94 00 00
+R 00 00 00 00 12 0E 05 00
+T 66 00 A0 0E B1 1E 34 9A 00 E0 10 E0
+R 00 00 00 00 20 08 01 00 04 00 40 0A 01 00 04 00
+T 70 00 0E 94 00 00 18 01 29 01 85 01 0E 94 00 00
+R 00 00 00 00 12 04 00 00 12 0E 08 00
+T 7E 00 38 01 49 01 00 E0 10 E0
+R 00 00 00 00 20 06 01 00 00 00 40 08 01 00 00 00
+T 86 00 0E 94 00 00 3A 93 2A 93 1A 93 0A 93 83 01
+R 00 00 00 00 12 04 00 00
+T 94 00 94 01 0E 94 00 00 81 01 92 01 0E 94 00 00
+R 00 00 00 00 12 06 07 00 12 0E 06 00
+T A2 00 0E 94 00 00 58 01 B9 90 A9 90 08 95
+R 00 00 00 00 12 04 03 00
+T AE 00 AA 92 BA 92 58 01 28 EE 33 E0 85 01
+R 00 00 00 00
+T BA 00 0E 94 00 00 20 2F 01 E0 0E 94 00 00 24 E6
+R 00 00 00 00 12 04 02 00 12 0C 04 00
+T C8 00 30 E0 85 01 0E 94 00 00 2A E0 30 E0
+R 00 00 00 00 12 08 02 00
+T D4 00 0E 94 00 00 20 2F 02 E0 0E 94 00 00 2A E0
+R 00 00 00 00 12 04 01 00 12 0C 04 00
+T E2 00 30 E0 85 01 0E 94 00 00 2A E0 30 E0
+R 00 00 00 00 12 08 02 00
+T EE 00 0E 94 00 00 20 2F 03 E0 0E 94 00 00 2A E0
+R 00 00 00 00 12 04 01 00 12 0C 04 00
+T FC 00 30 E0 85 01 0E 94 00 00 20 2F 04 E0
+R 00 00 00 00 12 08 01 00
+T 08 01 0E 94 00 00 B9 90 A9 90 08 95
+R 00 00 00 00 12 04 04 00
+T 00 00 00 00 80 44 00 70 1C 45
+R 00 00 01 00

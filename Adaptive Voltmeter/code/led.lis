@@ -1,0 +1,125 @@
+                        .module led.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile led.c
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\1.8\led.c
+ 0000                   .dbfunc e LED_Init _LED_Init fV
+                        .even
+ 0000           _LED_Init::
+ 0000                   .dbline -1
+ 0000                   .dbline 10
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include"macros.h"
+ 0000           ; #include"led.h"
+ 0000           ; 
+ 0000           ; 
+ 0000           ; 
+ 0000           ; /*** LED初始化函数 ***/
+ 0000           ; /******************************************************************************/
+ 0000           ; void LED_Init(void)
+ 0000           ; { 
+ 0000                   .dbline 11
+ 0000           ;       DDRB|=BIT(PB2);    //PB2端口皆设置为输出端口   1
+ 0000 BA9A              sbi 0x17,2
+ 0002                   .dbline 12
+ 0002           ;       DDRB|=BIT(PB3);    //PB3端口皆设置为输出端口   1
+ 0002 BB9A              sbi 0x17,3
+ 0004                   .dbline 13
+ 0004           ;       DDRB|=BIT(PB4);    //PB4端口皆设置为输出端口   1
+ 0004 BC9A              sbi 0x17,4
+ 0006                   .dbline 14
+ 0006           ;       PORTB|=BIT(PB2);  // 1输出1
+ 0006 C29A              sbi 0x18,2
+ 0008                   .dbline 15
+ 0008           ;       PORTB|=BIT(PB3);  // 1
+ 0008 C39A              sbi 0x18,3
+ 000A                   .dbline 16
+ 000A           ;       PORTB|=BIT(PB4);  // 1
+ 000A C49A              sbi 0x18,4
+ 000C                   .dbline -2
+ 000C           L1:
+ 000C                   .dbline 0 ; func end
+ 000C 0895              ret
+ 000E                   .dbend
+ 000E                   .dbfunc e LED_open _LED_open fV
+ 000E           ;             sw -> R16
+                        .even
+ 000E           _LED_open::
+ 000E 4A93              st -y,R20
+ 0010 5A93              st -y,R21
+ 0012                   .dbline -1
+ 0012                   .dbline 28
+ 0012           ; //    DDRB=0x1c;   //0001 1100
+ 0012           ; //    PORTB=0x1c;  //0001 1100
+ 0012           ; /*
+ 0012           ;     PORTB&=~BIT(2);   //电亮LED灯代码 LED1 LED2 LED3
+ 0012           ;       PORTB&=~BIT(3);   
+ 0012           ;       PORTB&=~BIT(4);
+ 0012           ;       PORTB|=BIT(4);   //关LED代码   
+ 0012           ; */
+ 0012           ; }
+ 0012           ; 
+ 0012           ; void LED_open(unsigned char sw)
+ 0012           ; {
+ 0012                   .dbline 29
+ 0012           ; switch(sw)            //位码输出
+ 0012 402F              mov R20,R16
+ 0014 5527              clr R21
+ 0016 4130              cpi R20,1
+ 0018 E0E0              ldi R30,0
+ 001A 5E07              cpc R21,R30
+ 001C 49F0              breq L6
+ 001E           X0:
+ 001E 4230              cpi R20,2
+ 0020 E0E0              ldi R30,0
+ 0022 5E07              cpc R21,R30
+ 0024 49F0              breq L7
+ 0026           X1:
+ 0026 4330              cpi R20,3
+ 0028 E0E0              ldi R30,0
+ 002A 5E07              cpc R21,R30
+ 002C 49F0              breq L8
+ 002E           X2:
+ 002E 0BC0              xjmp L3
+ 0030           L6:
+ 0030                   .dbline 31
+ 0030           ;       {
+ 0030           ;               case 1:PORTB&=~BIT(2);PORTB|=BIT(3);PORTB|=BIT(4);break;
+ 0030 C298              cbi 0x18,2
+ 0032                   .dbline 31
+ 0032 C39A              sbi 0x18,3
+ 0034                   .dbline 31
+ 0034 C49A              sbi 0x18,4
+ 0036                   .dbline 31
+ 0036 07C0              xjmp L4
+ 0038           L7:
+ 0038                   .dbline 32
+ 0038           ;               case 2:PORTB|=BIT(2);PORTB&=~BIT(3);PORTB|=BIT(4);break;
+ 0038 C29A              sbi 0x18,2
+ 003A                   .dbline 32
+ 003A C398              cbi 0x18,3
+ 003C                   .dbline 32
+ 003C C49A              sbi 0x18,4
+ 003E                   .dbline 32
+ 003E 03C0              xjmp L4
+ 0040           L8:
+ 0040                   .dbline 33
+ 0040           ;               case 3:PORTB|=BIT(2);PORTB|=BIT(3);PORTB&=~BIT(4);break;
+ 0040 C29A              sbi 0x18,2
+ 0042                   .dbline 33
+ 0042 C39A              sbi 0x18,3
+ 0044                   .dbline 33
+ 0044 C498              cbi 0x18,4
+ 0046                   .dbline 33
+ 0046           L3:
+ 0046           L4:
+ 0046                   .dbline -2
+ 0046           L2:
+ 0046                   .dbline 0 ; func end
+ 0046 5991              ld R21,y+
+ 0048 4991              ld R20,y+
+ 004A 0895              ret
+ 004C                   .dbsym r sw 16 c
+ 004C                   .dbend
+ 004C           ;       }
+ 004C           ; 
+ 004C           ; }

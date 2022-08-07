@@ -1,0 +1,80 @@
+#include"iom16v.h"
+#include"macros.h"
+//#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+//#include"adc.h"
+//#include"uart.h"
+
+
+//extern unsigned char RX_Buffer=0x00, RX_flag=0;
+//unsigned char const NixieTable[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};
+/*void delay_ms(unsigned int a)	    
+{
+         unsigned int x,y;
+         for(x=a;x>0;x--)
+                  for(y=1333;y>0;y--);
+}
+*/
+
+void main(void)
+{
+ //	USART_Init();
+	//Key_Init();
+	//LED_Init();
+    Nixie_Init();
+  //  Nixie(1,10);
+  //MCUCSR|=(1<<7);
+ // MCUCSR|=(1<<7);
+ // DDRA=0xff;
+ // PORTA=0x00;
+ // DDRC=0xff;
+  //PORTC=0xff;
+
+   
+
+	while(1)
+	{
+	//Key_1();
+	//Key_2();	
+	//Nixie(1,1);
+	//Nixie(2,10);
+	Nixie(1,0);
+	Nixie(2,1);
+	//Nixie(3,2);
+	//Nixie(4,3);
+	//Nixie(4,0);
+	//PORTA=0x40;
+	//PORTC=0x90;
+	//delay_ms(1);
+	//PORTC=0xff;
+	//PORTA=0x80;
+	//PORTC=0x99;
+	//delay_ms(1);
+	//PORTC=0xff;
+	
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//自发收的配置
+
+/* 		if(RX_flag)
+		{
+ 		   RX_flag=0;
+ 		   USART_Send(RX_Buffer);
+		   PORTB&=~BIT(2);
+ 
+ 		 }*/

@@ -1,0 +1,78 @@
+#include"iom16v.h"
+#include"macros.h"
+
+
+#define Get_Bit(val, bitn) (val &(1<<(bitn)) )   
+
+
+
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+
+/*** LED初始化函数 ***/
+/******************************************************************************/
+void LED_Init(void)
+{ 
+ //	DDRB|=BIT(2);    //PB2端口皆设置为输出端口
+	//DDRB|=BIT(3);    //PB2端口皆设置为输出端口
+	//DDRB|=BIT(4);    //PB2端口皆设置为输出端口
+	DDRB=0xfc;
+	PORTB|=BIT(2);    //
+	PORTB|=BIT(3);
+	PORTB|=BIT(4);
+/*
+    PORTB&=~BIT(2);   //电亮LED灯代码 LED1 LED2 LED3
+	PORTB&=~BIT(3);   
+	PORTB&=~BIT(4);   
+*/
+}
+
+
+/*** 按键初始化函数 ***/
+/******************************************************************************/
+void Key_Init(void)
+{
+    PORTB=0xff;   //使能上拉电阻
+	DDRB=0xfc;
+	
+ /*   DDRB&=~BIT(0);     //输入端口
+	DDRB&=~BIT(1);
+	PORTB|=BIT(0);
+	PORTB|=BIT(1);
+ */   
+}
+
+
+void Key_1(void)
+{
+    if(Get_Bit(PINB,0)==0)//检验PC0的电平状态是否为低电平
+    {
+	     delay_ms(20);//延时消抖
+         if(Get_Bit(PINB,0)==0)
+         {
+		   PORTB&=~BIT(2);   
+         }
+    }
+    while(Get_Bit(PINB,0)==0);//判断按键是否松开
+}
+
+
+
+void main(void)
+{
+ LED_Init();
+ Key_Init();
+while(1)
+{
+ Key_1();
+}
+}

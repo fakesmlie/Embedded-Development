@@ -1,0 +1,8 @@
+#ifndef ___adc_h
+#define ___adc_h
+
+void ADC_Init(void);
+unsigned int voltage_AD(void);
+unsigned int switch_open(unsigned int TEM);
+
+#endif

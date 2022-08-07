@@ -1,0 +1,245 @@
+                        .module Nixie.c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile Nixie.c
+                        .area data(ram, con, rel)
+ 0000                   .dbfile Nixie.c
+ 0000           _NixieTable::
+ 0000                   .blkb 2
+                        .area idata
+ 0000 C0F9              .byte 192,249
+                        .area data(ram, con, rel)
+ 0002                   .dbfile Nixie.c
+ 0002                   .blkb 2
+                        .area idata
+ 0002 A4B0              .byte 164,176
+                        .area data(ram, con, rel)
+ 0004                   .dbfile Nixie.c
+ 0004                   .blkb 2
+                        .area idata
+ 0004 9992              .byte 153,146
+                        .area data(ram, con, rel)
+ 0006                   .dbfile Nixie.c
+ 0006                   .blkb 2
+                        .area idata
+ 0006 82F8              .byte 130,248
+                        .area data(ram, con, rel)
+ 0008                   .dbfile Nixie.c
+ 0008                   .blkb 2
+                        .area idata
+ 0008 8090              .byte 128,144
+                        .area data(ram, con, rel)
+ 000A                   .dbfile Nixie.c
+ 000A                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\Nixie.c
+ 000A                   .dbsym e NixieTable _NixieTable A[10:10]c
+                        .area text(rom, con, rel)
+ 0000                   .dbfile D:\桌面\自适应电压表\程序\2.1最终\Nixie.c
+ 0000                   .dbfunc e Nixie_Init _Nixie_Init fV
+                        .even
+ 0000           _Nixie_Init::
+ 0000                   .dbline -1
+ 0000                   .dbline 15
+ 0000           ; #include"iom16v.h"
+ 0000           ; #include"macros.h"
+ 0000           ; #include"Nixie.h"
+ 0000           ; #include"key.h"
+ 0000           ; 
+ 0000           ; 
+ 0000           ; 
+ 0000           ; //数码管段码表  //共阳极数码管
+ 0000           ; const unsigned char  NixieTable[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};// 0~9
+ 0000           ; //unsigned char const NixieTable[]={0x80,0x40,0x20,0x10,0x08,0x04,0x02,0x01,0x00};// 0~9
+ 0000           ; 
+ 0000           ; //extern unsigned char NixieTable[]={0xc0,0xf9,0xa4,0xb0,0x99,0x92,0x82,0xf8,0x80,0x90};// 0~9
+ 0000           ; 
+ 0000           ; void Nixie_Init(void)
+ 0000           ; {
+ 0000                   .dbline 18
+ 0000           ; 
+ 0000           ; 
+ 0000           ;       MCUCSR|=(1<<7);
+ 0000 84B7              in R24,0x34
+ 0002 8068              ori R24,128
+ 0004 84BF              out 0x34,R24
+ 0006                   .dbline 19
+ 0006           ;     MCUCSR|=(1<<7);
+ 0006 84B7              in R24,0x34
+ 0008 8068              ori R24,128
+ 000A 84BF              out 0x34,R24
+ 000C                   .dbline 20
+ 000C           ;     DDRC=0xff;       // 配置PC为输出   1111 1111
+ 000C 8FEF              ldi R24,255
+ 000E 84BB              out 0x14,R24
+ 0010                   .dbline 21
+ 0010           ;     PORTC=0xff;      //配置PC输出低电平    1111 1111  //低电平进行段选
+ 0010 85BB              out 0x15,R24
+ 0012                   .dbline 22
+ 0012           ;       DDRA|=BIT(PA4);  //配置PA4为输出
+ 0012 D49A              sbi 0x1a,4
+ 0014                   .dbline 23
+ 0014           ;       DDRA|=BIT(PA5);
+ 0014 D59A              sbi 0x1a,5
+ 0016                   .dbline 24
+ 0016           ;       DDRA|=BIT(PA6);
+ 0016 D69A              sbi 0x1a,6
+ 0018                   .dbline 25
+ 0018           ;       DDRA|=BIT(PA7); 
+ 0018 D79A              sbi 0x1a,7
+ 001A                   .dbline 28
+ 001A           ;       //DDRA=0xf0;    // 配置PA为输出   1111 0000
+ 001A           ;       //PORTA=0x00;
+ 001A           ;       PORTA&=~BIT(PA4);  //  0
+ 001A DC98              cbi 0x1b,4
+ 001C                   .dbline 29
+ 001C           ;       PORTA&=~BIT(PA5);  //  0
+ 001C DD98              cbi 0x1b,5
+ 001E                   .dbline 30
+ 001E           ;       PORTA&=~BIT(PA6);  //  0
+ 001E DE98              cbi 0x1b,6
+ 0020                   .dbline 31
+ 0020           ;       PORTA&=~BIT(PA7);  //  0
+ 0020 DF98              cbi 0x1b,7
+ 0022                   .dbline -2
+ 0022           L1:
+ 0022                   .dbline 0 ; func end
+ 0022 0895              ret
+ 0024                   .dbend
+ 0024                   .dbfunc e Nixie _Nixie fV
+ 0024           ;         Number -> R10
+ 0024           ;       Location -> R12
+                        .even
+ 0024           _Nixie::
+ 0024 0E940000          xcall push_xgset303C
+ 0028 A22E              mov R10,R18
+ 002A C02E              mov R12,R16
+ 002C                   .dbline -1
+ 002C                   .dbline 39
+ 002C           ;  //   PORTA=0x00;   //配置PA输出高电平       0000 0000  高电平选中，所以我们要配置为低电平
+ 002C           ; 
+ 002C           ; }
+ 002C           ; 
+ 002C           ; 
+ 002C           ; 
+ 002C           ; void Nixie(unsigned char Location,unsigned char Number)
+ 002C           ; {
+ 002C                   .dbline 40
+ 002C           ;       switch(Location)                //位码输出
+ 002C 4C2D              mov R20,R12
+ 002E 5527              clr R21
+ 0030 4130              cpi R20,1
+ 0032 E0E0              ldi R30,0
+ 0034 5E07              cpc R21,R30
+ 0036 69F0              breq L6
+ 0038           X0:
+ 0038 4230              cpi R20,2
+ 003A E0E0              ldi R30,0
+ 003C 5E07              cpc R21,R30
+ 003E A1F0              breq L7
+ 0040           X1:
+ 0040 4330              cpi R20,3
+ 0042 E0E0              ldi R30,0
+ 0044 5E07              cpc R21,R30
+ 0046 D1F0              breq L8
+ 0048           X2:
+ 0048 4430              cpi R20,4
+ 004A E0E0              ldi R30,0
+ 004C 5E07              cpc R21,R30
+ 004E 01F1              breq L9
+ 0050           X3:
+ 0050 28C0              xjmp L3
+ 0052           L6:
+ 0052                   .dbline 42
+ 0052           ;       {
+ 0052           ;               case 1:PORTA|=BIT(4);PORTC=NixieTable[Number]+0x80;break;
+ 0052 DC9A              sbi 0x1b,4
+ 0054                   .dbline 42
+ 0054 80E0              ldi R24,<_NixieTable
+ 0056 90E0              ldi R25,>_NixieTable
+ 0058 EA2D              mov R30,R10
+ 005A FF27              clr R31
+ 005C E80F              add R30,R24
+ 005E F91F              adc R31,R25
+ 0060 8081              ldd R24,z+0
+ 0062 8058              subi R24,128    ; addi 128
+ 0064 85BB              out 0x15,R24
+ 0066                   .dbline 42
+ 0066 1DC0              xjmp L4
+ 0068           L7:
+ 0068                   .dbline 43
+ 0068           ;               case 2:PORTA|=BIT(5);PORTC=NixieTable[Number];break;
+ 0068 DD9A              sbi 0x1b,5
+ 006A                   .dbline 43
+ 006A 80E0              ldi R24,<_NixieTable
+ 006C 90E0              ldi R25,>_NixieTable
+ 006E EA2D              mov R30,R10
+ 0070 FF27              clr R31
+ 0072 E80F              add R30,R24
+ 0074 F91F              adc R31,R25
+ 0076 2080              ldd R2,z+0
+ 0078 25BA              out 0x15,R2
+ 007A                   .dbline 43
+ 007A 13C0              xjmp L4
+ 007C           L8:
+ 007C                   .dbline 44
+ 007C           ;               case 3:PORTA|=BIT(6);PORTC=NixieTable[Number];break;
+ 007C DE9A              sbi 0x1b,6
+ 007E                   .dbline 44
+ 007E 80E0              ldi R24,<_NixieTable
+ 0080 90E0              ldi R25,>_NixieTable
+ 0082 EA2D              mov R30,R10
+ 0084 FF27              clr R31
+ 0086 E80F              add R30,R24
+ 0088 F91F              adc R31,R25
+ 008A 2080              ldd R2,z+0
+ 008C 25BA              out 0x15,R2
+ 008E                   .dbline 44
+ 008E 09C0              xjmp L4
+ 0090           L9:
+ 0090                   .dbline 45
+ 0090           ;               case 4:PORTA|=BIT(7);PORTC=NixieTable[Number];break;
+ 0090 DF9A              sbi 0x1b,7
+ 0092                   .dbline 45
+ 0092 80E0              ldi R24,<_NixieTable
+ 0094 90E0              ldi R25,>_NixieTable
+ 0096 EA2D              mov R30,R10
+ 0098 FF27              clr R31
+ 009A E80F              add R30,R24
+ 009C F91F              adc R31,R25
+ 009E 2080              ldd R2,z+0
+ 00A0 25BA              out 0x15,R2
+ 00A2                   .dbline 45
+ 00A2           L3:
+ 00A2           L4:
+ 00A2                   .dbline 48
+ 00A2           ;       }
+ 00A2           ;       //PORTC=NixieTable[Number]+0x80;        //段码输出+0x80
+ 00A2           ;       delay_ms(1);   //显示一会
+ 00A2 01E0              ldi R16,1
+ 00A4 10E0              ldi R17,0
+ 00A6 0E940000          xcall _delay_ms
+ 00AA                   .dbline 51
+ 00AA           ;       //PORTC=0xff;   //消影
+ 00AA           ;       //PORTA=0x00;
+ 00AA           ;       PORTA&=~BIT(PA4);  //  0
+ 00AA DC98              cbi 0x1b,4
+ 00AC                   .dbline 52
+ 00AC           ;       PORTA&=~BIT(PA5);  //  0
+ 00AC DD98              cbi 0x1b,5
+ 00AE                   .dbline 53
+ 00AE           ;       PORTA&=~BIT(PA6);  //  0
+ 00AE DE98              cbi 0x1b,6
+ 00B0                   .dbline 54
+ 00B0           ;       PORTA&=~BIT(PA7);  //  0
+ 00B0 DF98              cbi 0x1b,7
+ 00B2                   .dbline -2
+ 00B2           L2:
+ 00B2                   .dbline 0 ; func end
+ 00B2 0C940000          xjmp pop_xgset303C
+ 00B6                   .dbsym r Number 10 c
+ 00B6                   .dbsym r Location 12 c
+ 00B6                   .dbend
+ 00B6           ;       
+ 00B6           ; }
+ 00B6           ; 
+ 00B6           ; 
+ 00B6           ; 
+ 00B6           ; 

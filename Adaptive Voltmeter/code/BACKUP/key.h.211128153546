@@ -1,0 +1,7 @@
+#ifndef ___key_h
+#define ___key_h
+
+void LED_Init(void);
+
+
+#endif

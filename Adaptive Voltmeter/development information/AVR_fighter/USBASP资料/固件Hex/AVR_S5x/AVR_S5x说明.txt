@@ -1,0 +1,17 @@
+此版本支持AVR及S51,S52芯片(未经测试)
+
+要配合此目录中网友314forever提供的固件 "AVR_S5x固件" 才能操作S5x芯片。
+如系统发现新的硬件，请安装 "USBASP资料\USBasp_Win驱动" 目录中的驱动。
+
+谢谢314forever网友写的固件 "菜鸟作品：USBasp改进版本，支持AT89S52"
+链接: http://www.ouravr.com/bbs/bbs_content.jsp?bbs_sn=778304&bbs_page_no=1&search_mode=1&search_text=usbasp&bbs_id=1000
+//--------------------------------------------------------
+314forever_main.hex 
+314forever网友编写的固件,采用固件来识别AVR或S5x 兼容zhifeng的软件
+//---------------------------------------------------------
+314forever_main自动调速.hex  (建议使用)
+314forever网友编写的固件能配合AVR_fighter软件实现自动调速度,并由AVR_fighter来识别是AVR或S5x芯片。
+
+速度共分5档(注意:与你目标芯片的时钟频率有关)
+1.5MHz、750KHz、375KHz、89.75KHz、32KHz
+//----------------------------------------------------------

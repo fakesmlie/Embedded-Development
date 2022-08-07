@@ -1,0 +1,48 @@
+#include"iom16v.h"
+#include"macros.h"
+#include"led.h"
+#include"key.h"
+#include"Nixie.h"
+#include"adc.h"
+
+
+//波特率，晶振
+#define BAUD 9600
+#define FXTAL 8000000
+//串口接收完毕中断触发声明
+#pragma interrupt handler USART Received Ir: 12
+//变量定义：接收缓冲变量，接收标志位
+unsigned char RX_Buffer=0x00, RX_flag=0;
+
+//函数声明
+void USARI_Send(unsigned char);
+//串口初始化函数
+Vole USART_IO_Init()
+{
+DDRD|=BIT(PD1);//PD1:TX为输出状态
+}
+
+
+//延时函数
+void delay_ms(unsigned int a)	    
+{
+    unsigned int j;
+    while(--a!=0)
+    {
+	     for(j=0;j<120;j++);
+    }
+}
+
+
+
+
+void main(void)
+{
+unsigned int voltage;
+
+
+while(1)
+{
+
+}
+}
